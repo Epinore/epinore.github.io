@@ -17,9 +17,9 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background-color: #2c3e50;
+            background-color: white;
             transition: background-color 0.5s ease;
-            color: white;
+            color: #333;
         }
 
         /* 游戏容器 */
@@ -28,6 +28,10 @@
             display: flex;
             position: relative;
             overflow: hidden;
+            background-color: white;
+            border-radius: 20px;
+            margin: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         /* 玩家区域 */
@@ -38,21 +42,25 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            border-radius: 15px;
         }
 
         /* CPS模式样式 */
         .cps-mode #blue-area {
-            background: linear-gradient(to right, #2980b9, #3498db);
+            background: linear-gradient(to right, #4DA9FF, #73C2FF);
+            border: 3px solid #2980b9;
         }
 
         .cps-mode #red-area {
-            background: linear-gradient(to left, #c0392b, #e74c3c);
+            background: linear-gradient(to left, #FF6B6B, #FF8E8E);
+            border: 3px solid #c0392b;
         }
 
         /* 反应模式样式 */
         .reaction-mode #blue-area,
         .reaction-mode #red-area {
-            background-color: #3399ff;
+            background-color: #f0f8ff;
+            border: 3px solid #3399ff;
         }
 
         #blue-area,
@@ -63,14 +71,15 @@
         /* 分界线 */
         .divider {
             position: absolute;
-            top: 0;
-            bottom: 0;
+            top: 10%;
+            bottom: 10%;
             left: 50%;
-            width: 2px;
-            background-color: white;
-            box-shadow: 0 0 10px white;
+            width: 4px;
+            background-color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
             z-index: 10;
             transition: left 0.1s ease-out;
+            border-radius: 2px;
         }
 
         /* 游戏信息区域 */
@@ -81,7 +90,7 @@
             right: 0;
             text-align: center;
             z-index: 20;
-            color: white;
+            color: #333;
         }
 
         /* 模式选择 */
@@ -90,23 +99,29 @@
         }
 
         .mode-button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1.2em;
             margin: 0 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            border-radius: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .mode-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
 
         .mode-button.active {
-            background-color: #2ecc71;
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
         }
 
         /* 计时器 */
@@ -117,6 +132,7 @@
             opacity: 1;
             transform: scale(1);
             transition: all 0.3s ease;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
         }
 
         .counter.countdown {
@@ -125,7 +141,7 @@
 
         @keyframes countdown-pulse {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 0.8; text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); }
             100% { transform: scale(1); opacity: 1; }
         }
 
@@ -133,6 +149,7 @@
         .instruction {
             font-size: 1.5em;
             margin-bottom: 20px;
+            font-weight: bold;
         }
 
         /* 分数显示 */
@@ -141,6 +158,17 @@
             justify-content: space-around;
             font-size: 1.5em;
             margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #blue-score {
+            color: #2980b9;
+            text-shadow: 2px 2px 4px rgba(41, 128, 185, 0.2);
+        }
+
+        #red-score {
+            color: #c0392b;
+            text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.2);
         }
 
         /* CPS显示 */
@@ -151,6 +179,7 @@
             margin-bottom: 20px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            font-weight: bold;
         }
 
         /* 游戏时间显示 */
@@ -159,6 +188,7 @@
             margin-bottom: 20px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            font-weight: bold;
         }
 
         /* 开始按钮 */
@@ -168,19 +198,30 @@
             background-color: #2ecc71;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
             margin: 0 10px;
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
         }
 
         .start-button:hover {
             background-color: #27ae60;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(46, 204, 113, 0.6);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.4);
         }
 
         .start-button:disabled {
             background-color: #95a5a6;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* 胜利者显示 */
@@ -189,18 +230,22 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 5em;
+            font-size: 6em;
             font-weight: bold;
-            color: white;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            color: #333;
+            text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), 0 0 30px rgba(76, 175, 80, 0.5);
             display: none;
             z-index: 30;
             animation: victory-flash 0.5s ease-in-out infinite alternate;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(76, 175, 80, 0.6);
         }
 
         @keyframes victory-flash {
             0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); text-shadow: 7px 7px 14px rgba(0, 0, 0, 0.25), 0 0 40px rgba(76, 175, 80, 0.7); }
         }
 
         /* 按键提示 */
@@ -209,8 +254,8 @@
             bottom: 20px;
             font-size: 2em;
             font-weight: bold;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         #blue-key {
@@ -224,37 +269,39 @@
         .key-box {
             display: inline-block;
             padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            border: 2px solid white;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 3px solid #ddd;
             margin-left: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-family: 'Courier New', monospace;
         }
 
         /* 震动动画 */
         .vibrate {
-            animation: vibrate 0.1s ease-in-out;
+            animation: vibrate 0.3s ease-in-out;
         }
 
         @keyframes vibrate {
             0%, 100% { transform: translate(0); }
-            25% { transform: translate(-2px, 2px); }
+            25% { transform: translate(-5px, 5px); }
             50% { transform: translate(0); }
-            75% { transform: translate(2px, -2px); }
+            75% { transform: translate(5px, -5px); }
         }
 
         /* 波纹效果 */
         .ripple {
             position: absolute;
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.5);
             transform: scale(0);
-            animation: ripple 0.6s ease-out;
+            animation: ripple 0.8s ease-out;
             pointer-events: none;
         }
 
         @keyframes ripple {
             to {
-                transform: scale(4);
+                transform: scale(6);
                 opacity: 0;
             }
         }
@@ -267,6 +314,95 @@
             margin-top: 20px;
             opacity: 0;
             transition: opacity 0.3s ease;
+            font-weight: bold;
+        }
+        
+        /* 目标时间显示 */
+        .target-time {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #e67e22;
+            text-shadow: 2px 2px 4px rgba(230, 126, 34, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Timing模式样式 */
+        .timing-mode #blue-area {
+            background: linear-gradient(to right, #64b5f6, #42a5f5);
+            border: 3px solid #2196f3;
+        }
+        
+        .timing-mode #red-area {
+            background: linear-gradient(to left, #ef5350, #e53935);
+            border: 3px solid #d32f2f;
+        }
+        
+        /* 秒表显示 */
+        .stopwatch {
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* 玩家名称标签 */
+        .player-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        /* 目标时间显示 */
+        .target-time {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #e67e22;
+            text-shadow: 2px 2px 4px rgba(230, 126, 34, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Timing模式样式 */
+        .timing-mode #blue-area {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            border: 3px solid #1f618d;
+        }
+        
+        .timing-mode #red-area {
+            background: linear-gradient(to left, #e74c3c, #c0392b);
+            border: 3px solid #922b21;
+        }
+        
+        /* 秒表显示 */
+        .stopwatch {
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* 玩家名称标签 */
+        .player-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        #blue-reaction {
+            color: #2980b9;
+        }
+
+        #red-reaction {
+            color: #c0392b;
         }
 
         /* 彩带效果容器 */
@@ -283,25 +419,39 @@
 
         /* 反应模式小球 */
         .reaction-ball {
-            width: 150px;
-            height: 150px;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
             background-color: #ff0000;
             transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
             position: absolute;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), inset 0 0 50px rgba(255, 255, 255, 0.2);
+            border: 5px solid rgba(255, 255, 255, 0.5);
+        }
+
+        #blue-ball {
+            background-color: #4DA9FF;
+            box-shadow: 0 10px 20px rgba(77, 169, 255, 0.3), inset 0 0 50px rgba(255, 255, 255, 0.3);
+        }
+
+        #red-ball {
+            background-color: #FF6B6B;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3), inset 0 0 50px rgba(255, 255, 255, 0.3);
         }
 
         .reaction-ball.green {
-            background-color: #00ff66;
-            transform: scale(1.1);
-            box-shadow: 0 0 30px #00ff66, 0 0 60px #00ff66, inset 0 0 30px rgba(0, 255, 102, 0.5);
+            background-color: #00ff66 !important;
+            transform: scale(1.2);
+            box-shadow: 0 0 50px #00ff66, 0 0 100px #00ff66, inset 0 0 50px rgba(0, 255, 102, 0.6);
             animation: pulse-glow 0.5s ease-in-out;
+            border-color: #00ff66;
         }
 
         @keyframes pulse-glow {
             0% { transform: scale(1); box-shadow: 0 0 0 rgba(0, 255, 102, 0.7); }
-            50% { transform: scale(1.15); box-shadow: 0 0 40px rgba(0, 255, 102, 0.9), 0 0 80px rgba(0, 255, 102, 0.6); }
-            100% { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 255, 102, 0.7), 0 0 60px rgba(0, 255, 102, 0.5); }
+            50% { transform: scale(1.25); box-shadow: 0 0 60px rgba(0, 255, 102, 0.9), 0 0 120px rgba(0, 255, 102, 0.6); }
+            100% { transform: scale(1.2); box-shadow: 0 0 50px rgba(0, 255, 102, 0.7), 0 0 100px rgba(0, 255, 102, 0.5); }
         }
 
         /* 区域闪烁光效 */
@@ -314,13 +464,13 @@
         }
 
         @keyframes blue-blink {
-            0% { background-color: #3399ff; }
-            100% { background-color: #55aaff; box-shadow: inset 0 0 50px rgba(51, 153, 255, 0.5); }
+            0% { background-color: #f0f8ff; }
+            100% { background-color: #e6f2ff; box-shadow: inset 0 0 50px rgba(51, 153, 255, 0.5); }
         }
 
         @keyframes red-blink {
-            0% { background-color: #3399ff; }
-            100% { background-color: #ff9999; box-shadow: inset 0 0 50px rgba(255, 153, 153, 0.5); }
+            0% { background-color: #f0f8ff; }
+            100% { background-color: #fff0f0; box-shadow: inset 0 0 50px rgba(255, 153, 153, 0.5); }
         }
 
         /* 按钮容器 */
@@ -340,7 +490,19 @@
             font-size: 1.2em;
             z-index: 25;
             opacity: 0;
+            pointer-events: none;
             transition: opacity 0.5s ease;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 0 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 当显示最终统计时，允许鼠标事件 */
+        .final-stats.show {
+            pointer-events: auto;
         }
     </style>
 </head>
@@ -364,6 +526,7 @@
         <div class="mode-selector">
             <button class="mode-button active" id="cps-mode-btn">CPS Battle</button>
             <button class="mode-button" id="reaction-mode-btn">Reaction Duel</button>
+            <button class="mode-button" id="timing-mode-btn">Timing Duel</button>
         </div>
         
         <!-- 计时器 -->
@@ -393,10 +556,14 @@
             <span id="red-reaction">红方反应: -- ms</span>
         </div>
         
+        <!-- 目标时间显示 -->
+        <div class="target-time" id="target-time">目标时间: --.--- s</div>
+        
         <!-- 按钮容器 -->
         <div class="button-container">
             <button class="start-button" id="start-cps-button">Start CPS Battle</button>
             <button class="start-button" id="start-reaction-button">Start Reaction Test</button>
+            <button class="start-button" id="start-timing-button">Start Timing Duel</button>
         </div>
     </div>
 
@@ -410,19 +577,19 @@
     <div class="confetti-container" id="confetti-container"></div>
 
     <!-- 音效元素 -->
-    <audio id="tick-sound" preload="auto"></audio>
-    <audio id="go-sound" preload="auto"></audio>
+    <audio id="start-sound" preload="auto"></audio>
+    <audio id="countdown-tick" preload="auto"></audio>
+    <audio id="game-start" preload="auto"></audio>
     <audio id="click-blue" preload="auto"></audio>
     <audio id="click-red" preload="auto"></audio>
     <audio id="victory-sound" preload="auto"></audio>
-    <audio id="green-sound" preload="auto"></audio>
-    <audio id="buzz-sound" preload="auto"></audio>
-    <audio id="waiting-sound" preload="auto"></audio>
+    <audio id="error-sound" preload="auto"></audio>
+    <audio id="green-light" preload="auto"></audio>
 
     <script>
         // 游戏状态
         let gameState = {
-            mode: 'cps', // 'cps' 或 'reaction'
+            mode: 'cps', // 'cps'、'reaction' 或 'timing'
             started: false,
             countingDown: false,
             blueScore: 0,
@@ -442,7 +609,21 @@
             redReactionTime: 0,
             falseStart: false,
             falseStartPlayer: null,
-            currentWinner: null
+            currentWinner: null,
+            // Timing Duel模式数据
+            targetTime: 0,
+            blueStopwatchTime: 0,
+            redStopwatchTime: 0,
+            blueStopwatchRunning: false,
+            redStopwatchRunning: false,
+            blueStopwatchStartTime: 0,
+            redStopwatchStartTime: 0,
+            blueStopwatchEndTime: 0,
+            redStopwatchEndTime: 0,
+            blueStopwatchInterval: null,
+            redStopwatchInterval: null,
+            blueCompleted: false,
+            redCompleted: false
         };
 
         // DOM元素
@@ -453,6 +634,7 @@
         const instruction = document.getElementById('instruction');
         const startCPSButton = document.getElementById('start-cps-button');
         const startReactionButton = document.getElementById('start-reaction-button');
+        const startTimingButton = document.getElementById('start-timing-button');
         const winnerDisplay = document.getElementById('winner-display');
         const blueScoreEl = document.getElementById('blue-score');
         const redScoreEl = document.getElementById('red-score');
@@ -464,8 +646,10 @@
         const reactionTimeDisplay = document.querySelector('.reaction-time');
         const blueReaction = document.getElementById('blue-reaction');
         const redReaction = document.getElementById('red-reaction');
+        const targetTimeEl = document.getElementById('target-time');
         const cpsModeButton = document.getElementById('cps-mode-btn');
         const reactionModeButton = document.getElementById('reaction-mode-btn');
+        const timingModeButton = document.getElementById('timing-mode-btn');
         const confettiContainer = document.getElementById('confetti-container');
         const finalStats = document.getElementById('final-stats');
         const blueBall = document.getElementById('blue-ball');
@@ -489,14 +673,17 @@
             // 更新按钮状态
             cpsModeButton.classList.toggle('active', mode === 'cps');
             reactionModeButton.classList.toggle('active', mode === 'reaction');
+            timingModeButton.classList.toggle('active', mode === 'timing');
             
             // 更新body类
             body.classList.toggle('cps-mode', mode === 'cps');
             body.classList.toggle('reaction-mode', mode === 'reaction');
+            body.classList.toggle('timing-mode', mode === 'timing');
             
             // 更新按钮显示
             startCPSButton.style.display = mode === 'cps' ? 'inline-block' : 'none';
             startReactionButton.style.display = mode === 'reaction' ? 'inline-block' : 'none';
+            startTimingButton.style.display = mode === 'timing' ? 'inline-block' : 'none';
             
             // 更新说明和UI显示
             if (mode === 'cps') {
@@ -505,16 +692,74 @@
                 cpsDisplay.style.opacity = '1';
                 gameTime.style.opacity = '1';
                 reactionTimeDisplay.style.opacity = '0';
-                blueBall.style.display = 'none';
-                redBall.style.display = 'none';
-            } else {
+                targetTimeEl.style.opacity = '0';
+                
+                // 重置CPS模式的UI - 不添加反应球
+                blueArea.innerHTML = `
+                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                `;
+                redArea.innerHTML = `
+                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                `;
+                
+                // 清除对已移除元素的引用
+                blueBall = null;
+                redBall = null;
+            } else if (mode === 'reaction') {
                 counter.textContent = '反应力对战模式';
                 instruction.textContent = '等待屏幕变绿后立即点击';
                 cpsDisplay.style.opacity = '0';
                 gameTime.style.opacity = '0';
                 reactionTimeDisplay.style.opacity = '1';
-                blueBall.style.display = 'block';
-                redBall.style.display = 'block';
+                targetTimeEl.style.opacity = '0';
+                
+                // 重置Reaction模式的UI
+                blueArea.innerHTML = `
+                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="reaction-ball" id="blue-ball"></div>
+                `;
+                redArea.innerHTML = `
+                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="reaction-ball" id="red-ball"></div>
+                `;
+                
+                // 获取小球元素并设置初始状态
+                // 使用全局变量
+                window.blueBall = document.getElementById('blue-ball');
+                window.redBall = document.getElementById('red-ball');
+                
+                // 确保小球可见
+                if (window.blueBall) window.blueBall.style.display = 'block';
+                if (window.redBall) window.redBall.style.display = 'block';
+                
+                // 移除green类，确保初始状态正确
+                if (window.blueBall) window.blueBall.classList.remove('green');
+                if (window.redBall) window.redBall.classList.remove('green');
+                
+                console.log('反应力模式UI重置完成:', {blueBall: window.blueBall, redBall: window.redBall});
+            } else if (mode === 'timing') {
+        counter.textContent = '时间精准度对战模式';
+        instruction.textContent = '尽可能精准地停止在目标时间';
+        cpsDisplay.style.opacity = '0';
+        gameTime.style.opacity = '1';
+        reactionTimeDisplay.style.opacity = '0';
+        targetTimeEl.style.opacity = '1';
+        
+        // 为Timing模式添加秒表和玩家名称
+        blueArea.innerHTML = `
+            <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+            <div class="player-name">蓝方</div>
+            <div class="stopwatch">0.000</div>
+        `;
+        redArea.innerHTML = `
+            <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+            <div class="player-name">红方</div>
+            <div class="stopwatch">0.000</div>
+        `;
+        
+        // 清除对已移除元素的引用
+        blueBall = null;
+        redBall = null;
             }
         }
 
@@ -525,27 +770,46 @@
             counter.textContent = gameState.countdown;
             counter.classList.add('countdown');
             
-            // 播放滴答声
-            playSound(tickSound);
+            // 播放开始音效
+            playSound('start-sound');
+            
+            // 震动反馈
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            // 播放倒计时音效
+            playSound('countdown-tick');
 
             gameState.countdownInterval = setInterval(() => {
                 gameState.countdown--;
+                
+                // 震动反馈
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+                
                 if (gameState.countdown > 0) {
                     counter.textContent = gameState.countdown;
                     counter.classList.remove('countdown');
                     // 触发重排以重新应用动画
                     void counter.offsetWidth;
                     counter.classList.add('countdown');
-                    // 播放滴答声
-                    playSound(tickSound);
+                    // 播放倒计时音效
+                    playSound('countdown-tick');
                 } else if (gameState.countdown === 0) {
                     counter.textContent = 'Go!';
                     counter.classList.remove('countdown');
                     // 触发重排以重新应用动画
                     void counter.offsetWidth;
                     counter.classList.add('countdown');
-                    // 播放Go声音
-                    playSound(goSound);
+                    // 播放游戏开始音效
+                    playSound('game-start');
+                    
+                    // 强烈震动
+                    if (navigator.vibrate) {
+                        navigator.vibrate(100);
+                    }
                 } else {
                     clearInterval(gameState.countdownInterval);
                     gameState.countingDown = false;
@@ -567,49 +831,146 @@
         function startReactionGame() {
             disableStartButtons();
             gameState.started = true;
+            gameState.falseStart = false;
+            gameState.greenTime = 0;
             counter.textContent = '等待变绿...';
             instruction.textContent = '不要提前点击！';
             
+            console.log('反应力游戏开始');
+            
             // 重置小球状态
-            blueBall.classList.remove('green');
-            redBall.classList.remove('green');
+            const blueBall = document.getElementById('blue-ball');
+            const redBall = document.getElementById('red-ball');
             
-            // 设置随机等待时间（2-6秒）
-            gameState.reactionWaitTime = Math.random() * 4000 + 2000;
+            console.log('获取小球元素:', {blueBall, redBall});
             
-            // 播放等待音效（低频滴答声）
-            gameState.waitingSoundInterval = setInterval(() => {
-                playSound(waitingSound);
-            }, 500);
+            if (blueBall) {
+                blueBall.classList.remove('green');
+                blueBall.style.display = 'block';
+                console.log('蓝球重置完成');
+            } else {
+                console.log('蓝球不存在，重新创建');
+                // 重新创建蓝球元素
+                blueArea.innerHTML = `
+                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="reaction-ball" id="blue-ball"></div>
+                `;
+            }
             
-            gameState.reactionTimer = setTimeout(() => {
-                if (gameState.started && !gameState.falseStart) {
-                    // 清除等待音效
-                    clearInterval(gameState.waitingSoundInterval);
-                    
-                    // 变绿
+            if (redBall) {
+                redBall.classList.remove('green');
+                redBall.style.display = 'block';
+                console.log('红球重置完成');
+            } else {
+                console.log('红球不存在，重新创建');
+                // 重新创建红球元素
+                redArea.innerHTML = `
+                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="reaction-ball" id="red-ball"></div>
+                `;
+            }
+            
+            // 简单的1秒后变绿，便于测试
+            const waitTime = 1000;
+            
+            // 播放开始音效
+            playSound('start-sound');
+            
+            // 震动反馈
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+            
+            console.log('等待', waitTime, '毫秒后变绿');
+            
+            // 直接设置定时器，确保变绿
+            setTimeout(() => {
+                console.log('执行变绿逻辑');
+                
+                // 重新获取小球元素，确保它们存在
+                const blueBall = document.getElementById('blue-ball');
+                const redBall = document.getElementById('red-ball');
+                
+                console.log('再次获取小球元素:', {blueBall, redBall});
+                
+                // 直接添加green类，不做复杂条件检查
+                if (blueBall) {
                     blueBall.classList.add('green');
-                    redBall.classList.add('green');
-                    counter.textContent = 'GREEN! Press!';
-                    instruction.textContent = '立即点击你的按键！';
-                    gameState.greenTime = performance.now();
-                    
-                    // 播放变绿提示音
-                    playSound(greenSound);
+                    console.log('蓝球变绿成功');
+                    console.log('蓝球类名:', blueBall.className);
+                    console.log('蓝球样式:', window.getComputedStyle(blueBall).backgroundColor);
                 }
-            }, gameState.reactionWaitTime);
+                
+                if (redBall) {
+                    redBall.classList.add('green');
+                    console.log('红球变绿成功');
+                    console.log('红球类名:', redBall.className);
+                    console.log('红球样式:', window.getComputedStyle(redBall).backgroundColor);
+                }
+                
+                counter.textContent = 'GREEN! Press!';
+                instruction.textContent = '立即点击你的按键！';
+                gameState.greenTime = performance.now();
+                
+                // 播放变绿提示音
+                playSound('green-light');
+                
+                // 强烈震动
+                if (navigator.vibrate) {
+                    navigator.vibrate(150);
+                }
+                
+            }, waitTime);
+        }
+        
+        // 开始Timing Duel游戏
+        function startTimingGame() {
+            disableStartButtons();
+            gameState.started = true;
+            gameState.mode = 'timing';
+            
+            // 生成随机目标时间（0.0-5.0秒，保留1位小数）
+            gameState.targetTime = Math.round(Math.random() * 50) / 10;
+            
+            // 显示目标时间
+            targetTimeEl.textContent = `目标时间: ${gameState.targetTime.toFixed(1)} s`;
+            targetTimeEl.style.opacity = '1';
+            
+            counter.textContent = '按任意键开始计时...';
+            instruction.textContent = '达到目标时间后再次点击停止！';
+            
+            // 初始化计时状态
+            gameState.blueStopwatchTime = 0;
+            gameState.redStopwatchTime = 0;
+            gameState.blueStopwatchRunning = false;
+            gameState.redStopwatchRunning = false;
+            gameState.blueCompleted = false;
+            gameState.redCompleted = false;
+            
+            // 初始化显示
+            updateTimingDisplay();
+            
+            // 播放开始音效
+            playSound('start-sound');
+            
+            // 震动反馈
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
         }
 
         // 禁用开始按钮
         function disableStartButtons() {
             startCPSButton.disabled = true;
             startReactionButton.disabled = true;
+            startTimingButton.disabled = true;
         }
 
         // 启用开始按钮
         function enableStartButtons() {
             startCPSButton.disabled = false;
             startReactionButton.disabled = false;
+            startTimingButton.disabled = false;
         }
 
         // 更新游戏状态（CPS模式）
@@ -658,6 +1019,24 @@
         }
 
         // 开始游戏时间计数器
+        function updateTimingDisplay() {
+            // 更新蓝方和红方的秒表显示
+            const blueTime = gameState.blueStopwatchTime / 1000;
+            const redTime = gameState.redStopwatchTime / 1000;
+            
+            // 获取蓝方和红方区域内的秒表元素
+            const blueStopwatch = document.querySelector('#blue-area .stopwatch');
+            const redStopwatch = document.querySelector('#red-area .stopwatch');
+            
+            if (blueStopwatch) {
+                blueStopwatch.textContent = blueTime.toFixed(3);
+            }
+            
+            if (redStopwatch) {
+                redStopwatch.textContent = redTime.toFixed(3);
+            }
+        }
+        
         function startGameTimeCounter() {
             gameState.gameTimeInterval = setInterval(() => {
                 if (gameState.started) {
@@ -673,6 +1052,8 @@
             clearInterval(gameState.countdownInterval);
             clearInterval(gameState.gameTimeInterval);
             clearInterval(gameState.waitingSoundInterval);
+            clearInterval(gameState.blueStopwatchInterval);
+            clearInterval(gameState.redStopwatchInterval);
             clearTimeout(gameState.reactionTimer);
             
             gameState.started = false;
@@ -702,15 +1083,26 @@
             showFinalStats();
             
             // 播放胜利音效
-            playSound(victorySound);
+            playSound('victory-sound');
+            
+            // 震动反馈
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
             
             // 显示彩带效果
             createConfetti(winner);
             
-            // 启用重新开始按钮
-            setTimeout(() => {
-                enableStartButtons();
-            }, 2000);
+            // 立即启用所有开始按钮，不使用延迟
+            startCPSButton.disabled = false;
+            startReactionButton.disabled = false;
+            startTimingButton.disabled = false;
+            
+            console.log('游戏结束，按钮已启用:', {
+                startCPSButton: !startCPSButton.disabled,
+                startReactionButton: !startReactionButton.disabled,
+                startTimingButton: !startTimingButton.disabled
+            });
         }
 
         // 显示最终统计信息
@@ -727,7 +1119,7 @@
                     <div>蓝方点击: ${gameState.blueScore} 次 (CPS: ${finalBlueCps})</div>
                     <div>红方点击: ${gameState.redScore} 次 (CPS: ${finalRedCps})</div>
                 `;
-            } else {
+            } else if (gameState.mode === 'reaction') {
                 // 反应模式显示
                 if (gameState.falseStart) {
                     statsHTML = `
@@ -745,17 +1137,29 @@
                         <div>红方反应时间: ${gameState.redReactionTime || '--'} ms</div>
                     `;
                 }
+            } else if (gameState.mode === 'timing') {
+                // Timing Duel模式显示
+                const blueError = Math.abs(gameState.blueStopwatchTime - gameState.targetTime).toFixed(4);
+                const redError = Math.abs(gameState.redStopwatchTime - gameState.targetTime).toFixed(4);
+                
+                statsHTML = `
+                    <div>目标时间: ${gameState.targetTime.toFixed(1)} s</div>
+                    <div>蓝方最终时间: ${gameState.blueStopwatchTime.toFixed(3)} s</div>
+                    <div>红方最终时间: ${gameState.redStopwatchTime.toFixed(3)} s</div>
+                    <div>蓝方误差: ${blueError} s</div>
+                    <div>红方误差: ${redError} s</div>
+                `;
             }
             
             finalStats.innerHTML = statsHTML;
             finalStats.style.opacity = '1';
+            finalStats.classList.add('show');
         }
 
         // 检测提前点击
         function detectFalseStart(player) {
             if (gameState.mode === 'reaction' && gameState.started && !gameState.falseStart && !gameState.greenTime) {
-                // 清除等待音效和定时器
-                clearInterval(gameState.waitingSoundInterval);
+                // 清除定时器
                 clearTimeout(gameState.reactionTimer);
                 
                 gameState.falseStart = true;
@@ -763,6 +1167,11 @@
                 
                 // 播放错误音效
                 playSound(buzzSound);
+                
+                // 震动反馈
+                if (navigator.vibrate) {
+                    navigator.vibrate([50, 50, 50]);
+                }
                 
                 // 显示错误信息
                 counter.textContent = 'False Start!';
@@ -834,11 +1243,80 @@
             }, 600);
         }
 
-        // 播放音效（使用模拟音效）
-        function playSound(audioElement) {
-            // 在实际环境中，这里会播放真实的音效
-            // 由于我们没有实际的音频文件，这里只是一个占位符
-            console.log('播放音效:', audioElement.id);
+        // Web Audio API 初始化
+        let audioContext;
+        try {
+            window.AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioContext = new AudioContext();
+        } catch (e) {
+            console.log('Web Audio API 不受支持，将使用模拟音效');
+        }
+
+        // 生成音调函数
+        function playTone(frequency, duration, type = 'sine', volume = 0.3) {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = type;
+            oscillator.frequency.value = frequency;
+            
+            gainNode.gain.value = volume;
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            
+            // 淡入效果
+            gainNode.gain.exponentialRampToValueAtTime(volume, audioContext.currentTime + 0.01);
+            
+            // 淡出效果
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            
+            // 结束音调
+            setTimeout(() => {
+                oscillator.stop();
+            }, duration * 1000);
+        }
+
+        // 播放音效
+        function playSound(soundType) {
+            // 检查并恢复音频上下文（浏览器限制）
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            // 根据音效类型播放不同的音调
+            switch(soundType.id || soundType) {
+                case 'start-sound':
+                case 'game-start':
+                    playTone(880, 0.3, 'sine', 0.2);
+                    break;
+                case 'countdown-tick':
+                    playTone(440, 0.2, 'sine', 0.15);
+                    break;
+                case 'click-blue':
+                    playTone(660, 0.1, 'sine', 0.25);
+                    break;
+                case 'click-red':
+                    playTone(554, 0.1, 'sine', 0.25);
+                    break;
+                case 'victory-sound':
+                    // 胜利音效序列
+                    playTone(660, 0.2, 'sine', 0.3);
+                    setTimeout(() => playTone(880, 0.2, 'sine', 0.3), 200);
+                    setTimeout(() => playTone(1320, 0.5, 'sine', 0.3), 400);
+                    break;
+                case 'error-sound':
+                case 'buzz-sound':
+                    playTone(110, 0.5, 'triangle', 0.3);
+                    break;
+                case 'green-light':
+                    playTone(1046.5, 0.4, 'sine', 0.3);
+                    break;
+            }
         }
 
         // 重置游戏
@@ -847,6 +1325,8 @@
             clearInterval(gameState.countdownInterval);
             clearInterval(gameState.gameTimeInterval);
             clearInterval(gameState.waitingSoundInterval);
+            clearInterval(gameState.blueStopwatchInterval);
+            clearInterval(gameState.redStopwatchInterval);
             clearTimeout(gameState.reactionTimer);
             
             // 重置游戏状态
@@ -867,9 +1347,23 @@
             gameState.falseStartPlayer = null;
             gameState.currentWinner = null;
             
+            // 重置Timing模式状态
+            gameState.targetTime = 0;
+            gameState.blueStopwatchTime = 0;
+            gameState.redStopwatchTime = 0;
+            gameState.blueStopwatchRunning = false;
+            gameState.redStopwatchRunning = false;
+            gameState.blueStopwatchStartTime = 0;
+            gameState.redStopwatchStartTime = 0;
+            gameState.blueStopwatchEndTime = 0;
+            gameState.redStopwatchEndTime = 0;
+            gameState.blueCompleted = false;
+            gameState.redCompleted = false;
+            
             // 重置UI
             winnerDisplay.style.display = 'none';
             finalStats.style.opacity = '0';
+            finalStats.classList.remove('show');
             blueArea.style.width = '50%';
             redArea.style.width = '50%';
             divider.style.left = '50%';
@@ -886,8 +1380,8 @@
             redArea.classList.remove('red-flash');
             
             // 重置小球状态
-            blueBall.classList.remove('green');
-            redBall.classList.remove('green');
+            if (window.blueBall) window.blueBall.classList.remove('green');
+            if (window.redBall) window.redBall.classList.remove('green');
             
             // 清空彩带效果
             confettiContainer.innerHTML = '';
@@ -905,127 +1399,230 @@
             }
         }
 
-        // 键盘事件监听
-        document.addEventListener('keydown', (event) => {
-            // 只有在游戏开始后且不在倒计时阶段才能操作
-            if ((gameState.started || gameState.mode === 'reaction') && !gameState.countingDown) {
-                // 蓝方按键
-                if (event.key.toLowerCase() === 's') {
-                    // 防作弊：只在keyup后才允许再次计数
-                    if (!gameState.bluePressed) {
-                        gameState.bluePressed = true;
+        // 处理玩家操作的函数
+        function handlePlayerAction(player) {
+            if ((gameState.started || gameState.mode === 'reaction' || gameState.mode === 'timing') && !gameState.countingDown) {
+                const isBlue = player === 'blue';
+                const area = isBlue ? blueArea : redArea;
+                const pressedState = isBlue ? 'bluePressed' : 'redPressed';
+                const scoreState = isBlue ? 'blueScore' : 'redScore';
+                const reactionState = isBlue ? 'blueReactionTime' : 'redReactionTime';
+                const reactionText = isBlue ? blueReaction : redReaction;
+                const sound = isBlue ? clickBlue : clickRed;
+                const stopwatchState = isBlue ? 'blueStopwatchTime' : 'redStopwatchTime';
+                
+                // 防作弊：只在释放后才允许再次计数
+                if (!gameState[pressedState]) {
+                    gameState[pressedState] = true;
+                    
+                    if (gameState.mode === 'cps' && gameState.started) {
+                        gameState[scoreState]++;
+                        updateGameState();
                         
-                        if (gameState.mode === 'cps' && gameState.started) {
-                            gameState.blueScore++;
-                            updateGameState();
+                        // 添加震动效果
+                        area.classList.add('vibrate');
+                        setTimeout(() => {
+                            area.classList.remove('vibrate');
+                        }, 300);
+                        
+                        // 创建波纹效果
+                        const rect = area.getBoundingClientRect();
+                        createRipple(rect.width / 2, rect.height / 2, player);
+                        
+                        // 播放点击音效
+                        playSound(sound);
+                        
+                        // 移动设备震动反馈
+                        if ('vibrate' in navigator) {
+                            navigator.vibrate(50);
+                        }
+                    } else if (gameState.mode === 'reaction') {
+                        // 检查是否是提前点击
+                        if (!gameState.greenTime) {
+                            detectFalseStart(player);
+                        } else if (!gameState[reactionState] && !gameState.falseStart) {
+                            // 记录反应时间
+                            gameState[reactionState] = Math.round(performance.now() - gameState.greenTime);
+                            reactionText.textContent = `${isBlue ? '蓝方' : '红方'}反应: ${gameState[reactionState]} ms`;
+                            
+                            // 点击后移除green类，让球变回原来的颜色
+                            const blueBall = document.getElementById('blue-ball');
+                            const redBall = document.getElementById('red-ball');
+                            if (isBlue && blueBall) {
+                                blueBall.classList.remove('green');
+                            } else if (!isBlue && redBall) {
+                                redBall.classList.remove('green');
+                            }
                             
                             // 添加震动效果
-                            blueArea.classList.add('vibrate');
+                            area.classList.add('vibrate');
                             setTimeout(() => {
-                                blueArea.classList.remove('vibrate');
-                            }, 100);
-                            
-                            // 创建波纹效果
-                            const rect = blueArea.getBoundingClientRect();
-                            createRipple(rect.width / 2, rect.height / 2, 'blue');
+                                area.classList.remove('vibrate');
+                            }, 300);
                             
                             // 播放点击音效
-                            playSound(clickBlue);
-                        } else if (gameState.mode === 'reaction') {
-                            // 检查是否是提前点击
-                            if (!gameState.greenTime) {
-                                detectFalseStart('blue');
-                            } else if (!gameState.blueReactionTime && !gameState.falseStart) {
-                                // 记录反应时间
-                                gameState.blueReactionTime = Math.round(performance.now() - gameState.greenTime);
-                                blueReaction.textContent = `蓝方反应: ${gameState.blueReactionTime} ms`;
-                                
-                                // 添加震动效果
-                                blueArea.classList.add('vibrate');
+                            playSound(sound);
+                            
+                            // 移动设备震动反馈
+                            if ('vibrate' in navigator) {
+                                navigator.vibrate(100);
+                            }
+                            
+                            // 检查是否双方都已点击
+                            if ((isBlue && gameState.redReactionTime) || (!isBlue && gameState.blueReactionTime)) {
+                                // 判定胜负
+                                const winner = gameState.blueReactionTime < gameState.redReactionTime ? 'blue' : 'red';
                                 setTimeout(() => {
-                                    blueArea.classList.remove('vibrate');
-                                }, 100);
-                                
-                                // 播放点击音效
-                                playSound(clickBlue);
-                                
-                                // 检查是否双方都已点击
-                                if (gameState.redReactionTime) {
-                                    // 判定胜负
-                                    const winner = gameState.blueReactionTime < gameState.redReactionTime ? 'blue' : 'red';
-                                    setTimeout(() => {
-                                        endGame(winner);
-                                    }, 500);
-                                }
+                                    endGame(winner);
+                                }, 500);
                             }
                         }
-                    }
-                }
-                // 红方按键
-                else if (event.key.toLowerCase() === 'l') {
-                    // 防作弊：只在keyup后才允许再次计数
-                    if (!gameState.redPressed) {
-                        gameState.redPressed = true;
-                        
-                        if (gameState.mode === 'cps' && gameState.started) {
-                            gameState.redScore++;
-                            updateGameState();
-                            
-                            // 添加震动效果
-                            redArea.classList.add('vibrate');
-                            setTimeout(() => {
-                                redArea.classList.remove('vibrate');
-                            }, 100);
-                            
-                            // 创建波纹效果
-                            const rect = redArea.getBoundingClientRect();
-                            createRipple(rect.width / 2, rect.height / 2, 'red');
-                            
-                            // 播放点击音效
-                            playSound(clickRed);
-                        } else if (gameState.mode === 'reaction') {
-                            // 检查是否是提前点击
-                            if (!gameState.greenTime) {
-                                detectFalseStart('red');
-                            } else if (!gameState.redReactionTime && !gameState.falseStart) {
-                                // 记录反应时间
-                                gameState.redReactionTime = Math.round(performance.now() - gameState.greenTime);
-                                redReaction.textContent = `红方反应: ${gameState.redReactionTime} ms`;
+                    } else if (gameState.mode === 'timing' && gameState.started) {
+                        // 检查是否已经完成
+                        if (!gameState[`${player}Completed`]) {
+                            // 如果是第一次点击，开始计时
+                            if (!gameState[`${player}StopwatchRunning`]) {
+                                gameState[`${player}StopwatchRunning`] = true;
+                                gameState[`${player}StopwatchStartTime`] = performance.now();
                                 
-                                // 添加震动效果
-                                redArea.classList.add('vibrate');
-                                setTimeout(() => {
-                                    redArea.classList.remove('vibrate');
-                                }, 100);
+                                // 开始秒表计时器
+                                gameState[`${player}StopwatchInterval`] = setInterval(() => {
+                                    gameState[stopwatchState] = performance.now() - gameState[`${player}StopwatchStartTime`];
+                                    updateTimingDisplay();
+                                }, 10); // 更新频率为10毫秒，确保毫秒级精度
                                 
                                 // 播放点击音效
-                                playSound(clickRed);
+                                playSound(sound);
                                 
-                                // 检查是否双方都已点击
-                                if (gameState.blueReactionTime) {
+                                // 移动设备震动反馈
+                                if ('vibrate' in navigator) {
+                                    navigator.vibrate(50);
+                                }
+                            } else {
+                                // 停止对应的秒表
+                                clearInterval(gameState[`${player}StopwatchInterval`]);
+                                
+                                // 计算最终时间（精确到毫秒）
+                                gameState[stopwatchState] = performance.now() - gameState[`${player}StopwatchStartTime`];
+                                gameState[`${player}Completed`] = true;
+                                
+                                // 更新显示
+                                updateTimingDisplay();
+                                
+                                // 添加震动效果
+                                area.classList.add('vibrate');
+                                setTimeout(() => {
+                                    area.classList.remove('vibrate');
+                                }, 300);
+                                
+                                // 创建波纹效果
+                                const rect = area.getBoundingClientRect();
+                                createRipple(rect.width / 2, rect.height / 2, player);
+                                
+                                // 播放点击音效
+                                playSound(sound);
+                                
+                                // 移动设备震动反馈
+                                if ('vibrate' in navigator) {
+                                    navigator.vibrate(100);
+                                }
+                                
+                                // 检查是否双方都已停止
+                                if (gameState.blueCompleted && gameState.redCompleted) {
                                     // 判定胜负
-                                    const winner = gameState.blueReactionTime < gameState.redReactionTime ? 'blue' : 'red';
+                                    const blueDifference = Math.abs((gameState.blueStopwatchTime / 1000) - gameState.targetTime);
+                                    const redDifference = Math.abs((gameState.redStopwatchTime / 1000) - gameState.targetTime);
+                                    const winner = blueDifference < redDifference ? 'blue' : 'red';
+                                    
                                     setTimeout(() => {
                                         endGame(winner);
-                                    }, 500);
+                                    }, 1000);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+        
+        // 重置玩家按下状态的函数
+        function resetPlayerPressed(player) {
+            gameState[player === 'blue' ? 'bluePressed' : 'redPressed'] = false;
+        }
+        
+        // 键盘事件监听
+        document.addEventListener('keydown', (event) => {
+            // 只有在游戏开始后且不在倒计时阶段才能操作
+            if ((gameState.started || gameState.mode === 'reaction' || gameState.mode === 'timing') && !gameState.countingDown) {
+                // 蓝方按键
+                if (event.key.toLowerCase() === 's') {
+                    handlePlayerAction('blue');
+                }
+                // 红方按键
+                else if (event.key.toLowerCase() === 'l') {
+                    handlePlayerAction('red');
+                }
+            }
+        });
+        
+        // 触摸事件监听 - 蓝方区域
+        blueArea.addEventListener('touchstart', (event) => {
+            event.preventDefault(); // 防止页面滚动
+            handlePlayerAction('blue');
+        });
+        
+        blueArea.addEventListener('touchend', (event) => {
+            event.preventDefault();
+            resetPlayerPressed('blue');
+        });
+        
+        // 触摸事件监听 - 红方区域
+        redArea.addEventListener('touchstart', (event) => {
+            event.preventDefault(); // 防止页面滚动
+            handlePlayerAction('red');
+        });
+        
+        redArea.addEventListener('touchend', (event) => {
+            event.preventDefault();
+            resetPlayerPressed('red');
+        });
+        
+        // 鼠标点击事件监听 - 蓝方区域
+        blueArea.addEventListener('mousedown', (event) => {
+            handlePlayerAction('blue');
+        });
+        
+        blueArea.addEventListener('mouseup', (event) => {
+            resetPlayerPressed('blue');
+        });
+        
+        blueArea.addEventListener('mouseleave', (event) => {
+            resetPlayerPressed('blue');
+        });
+        
+        // 鼠标点击事件监听 - 红方区域
+        redArea.addEventListener('mousedown', (event) => {
+            handlePlayerAction('red');
+        });
+        
+        redArea.addEventListener('mouseup', (event) => {
+            resetPlayerPressed('red');
+        });
+        
+        redArea.addEventListener('mouseleave', (event) => {
+            resetPlayerPressed('red');
         });
 
         // 键盘抬起事件监听
         document.addEventListener('keyup', (event) => {
             if (event.key.toLowerCase() === 's') {
-                gameState.bluePressed = false;
+                resetPlayerPressed('blue');
             } else if (event.key.toLowerCase() === 'l') {
-                gameState.redPressed = false;
+                resetPlayerPressed('red');
             }
         });
 
-        // 事件监听器
+        // 为开始按钮添加事件监听器
         startCPSButton.addEventListener('click', () => {
             if (gameState.mode !== 'cps') {
                 switchMode('cps');
@@ -1042,12 +1639,24 @@
             startReactionGame();
         });
 
+        startTimingButton.addEventListener('click', () => {
+            if (gameState.mode !== 'timing') {
+                switchMode('timing');
+            }
+            resetGame();
+            startTimingGame();
+        });
+
         cpsModeButton.addEventListener('click', () => {
             switchMode('cps');
         });
 
         reactionModeButton.addEventListener('click', () => {
             switchMode('reaction');
+        });
+
+        timingModeButton.addEventListener('click', () => {
+            switchMode('timing');
         });
 
         // 初始化游戏状态
