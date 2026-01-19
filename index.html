@@ -591,6 +591,7 @@
         let gameState = {
             mode: 'cps', // 'cps'、'reaction' 或 'timing'
             started: false,
+            ended: false,
             countingDown: false,
             blueScore: 0,
             redScore: 0,
@@ -830,9 +831,14 @@
         // 开始反应游戏
         function startReactionGame() {
             disableStartButtons();
+            
+            // 重置游戏状态
             gameState.started = true;
+            gameState.ended = false;
             gameState.falseStart = false;
             gameState.greenTime = 0;
+            gameState.reactionTimer = null; // 确保定时器被重置
+            
             counter.textContent = '等待变绿...';
             instruction.textContent = '不要提前点击！';
             
@@ -870,8 +876,8 @@
                 `;
             }
             
-            // 简单的1秒后变绿，便于测试
-            const waitTime = 1000;
+            // 5到12秒之间的随机等待时间
+            const waitTime = Math.random() * (9000 - 3000) + 5000;
             
             // 播放开始音效
             playSound('start-sound');
@@ -884,7 +890,10 @@
             console.log('等待', waitTime, '毫秒后变绿');
             
             // 直接设置定时器，确保变绿
-            setTimeout(() => {
+            gameState.reactionTimer = setTimeout(() => {
+                // 检查游戏是否已结束
+                if (gameState.ended) return;
+                
                 console.log('执行变绿逻辑');
                 
                 // 重新获取小球元素，确保它们存在
@@ -1048,17 +1057,37 @@
 
         // 结束游戏函数
         function endGame(winner) {
-            // 清除所有定时器
-            clearInterval(gameState.countdownInterval);
-            clearInterval(gameState.gameTimeInterval);
-            clearInterval(gameState.waitingSoundInterval);
-            clearInterval(gameState.blueStopwatchInterval);
-            clearInterval(gameState.redStopwatchInterval);
-            clearTimeout(gameState.reactionTimer);
+            console.log('endGame函数被调用', {winner, gameState});
             
+            // 设置游戏结束状态
+            gameState.ended = true;
             gameState.started = false;
             gameState.gameEndTime = performance.now();
             gameState.currentWinner = winner;
+            
+            // 清除所有定时器
+        clearInterval(gameState.countdownInterval);
+        clearInterval(gameState.gameTimeInterval);
+        clearInterval(gameState.waitingSoundInterval);
+        clearInterval(gameState.blueStopwatchInterval);
+        clearInterval(gameState.redStopwatchInterval);
+        clearTimeout(gameState.reactionTimer);
+        
+        // 将所有定时器变量重置为null
+        gameState.countdownInterval = null;
+        gameState.gameTimeInterval = null;
+        gameState.waitingSoundInterval = null;
+        gameState.blueStopwatchInterval = null;
+        gameState.redStopwatchInterval = null;
+        gameState.reactionTimer = null;
+            
+            // 将所有定时器变量重置为null
+            gameState.countdownInterval = null;
+            gameState.gameTimeInterval = null;
+            gameState.waitingSoundInterval = null;
+            gameState.blueStopwatchInterval = null;
+            gameState.redStopwatchInterval = null;
+            gameState.reactionTimer = null;
             
             let winnerText;
             let loser;
@@ -1144,45 +1173,77 @@
                 
                 statsHTML = `
                     <div>目标时间: ${gameState.targetTime.toFixed(1)} s</div>
-                    <div>蓝方最终时间: ${gameState.blueStopwatchTime.toFixed(3)} s</div>
-                    <div>红方最终时间: ${gameState.redStopwatchTime.toFixed(3)} s</div>
-                    <div>蓝方误差: ${blueError} s</div>
-                    <div>红方误差: ${redError} s</div>
+                    <div>蓝方最终时间: ${gameState.blueStopwatchTime.toFixed(3)} ms</div>
+                    <div>红方最终时间: ${gameState.redStopwatchTime.toFixed(3)} ms</div>
+                    <div>蓝方误差: ${blueError} ms</div>
+                    <div>红方误差: ${redError} ms</div>
                 `;
             }
+            
+            // 添加"再来一次"按钮
+            statsHTML += `
+                <button id="play-again-button" style="
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    background-color: #4CAF50;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                ">再来一次</button>
+            `;
             
             finalStats.innerHTML = statsHTML;
             finalStats.style.opacity = '1';
             finalStats.classList.add('show');
+            
+            // 添加按钮事件监听
+            const playAgainButton = document.getElementById('play-again-button');
+            playAgainButton.addEventListener('click', function() {
+                resetGame();
+                // 重新开始当前模式的游戏
+                if (gameState.mode === 'cps') {
+                    startCPSGame();
+                } else if (gameState.mode === 'reaction') {
+                    startReactionGame();
+                } else if (gameState.mode === 'timing') {
+                    startTimingGame();
+                }
+            });
         }
 
-        // 检测提前点击
+        // 检测提前点击的函数已整合到handlePlayerAction中，不再需要单独调用
+        // 此函数保留作为备用，但主要逻辑已迁移到handlePlayerAction
         function detectFalseStart(player) {
-            if (gameState.mode === 'reaction' && gameState.started && !gameState.falseStart && !gameState.greenTime) {
-                // 清除定时器
+            console.log('detectFalseStart被调用(备用)', {player, gameState});
+            
+            // 立即清除反应定时器
+            if (gameState.reactionTimer) {
                 clearTimeout(gameState.reactionTimer);
-                
-                gameState.falseStart = true;
-                gameState.falseStartPlayer = player;
-                
-                // 播放错误音效
-                playSound(buzzSound);
-                
-                // 震动反馈
-                if (navigator.vibrate) {
-                    navigator.vibrate([50, 50, 50]);
-                }
-                
-                // 显示错误信息
-                counter.textContent = 'False Start!';
-                instruction.textContent = '提前点击了！';
-                
-                // 结束游戏，另一方获胜
-                const winner = player === 'blue' ? 'red' : 'blue';
-                setTimeout(() => {
-                    endGame(winner);
-                }, 1000);
+                gameState.reactionTimer = null;
             }
+            
+            // 设置提前点击状态
+            gameState.falseStart = true;
+            gameState.falseStartPlayer = player;
+            
+            // 播放错误音效
+            playSound('buzz-sound');
+            
+            // 震动反馈
+            if (navigator.vibrate) {
+                navigator.vibrate([50, 50, 50]);
+            }
+            
+            // 显示错误信息
+            counter.textContent = 'False Start!';
+            instruction.textContent = `${player === 'blue' ? '蓝方' : '红方'} 提前点击了！`;
+            
+            // 结束游戏，另一方获胜
+            const winner = player === 'blue' ? 'red' : 'blue';
+            endGame(winner);
         }
 
         // 创建彩带效果
@@ -1331,6 +1392,7 @@
             
             // 重置游戏状态
             gameState.started = false;
+            gameState.ended = false;
             gameState.countingDown = false;
             gameState.blueScore = 0;
             gameState.redScore = 0;
@@ -1401,6 +1463,84 @@
 
         // 处理玩家操作的函数
         function handlePlayerAction(player) {
+            console.log('handlePlayerAction被调用', {player, gameState});
+            
+            // 检查是否已经结束游戏
+            if (gameState.ended) {
+                console.log('游戏已经结束，不处理操作');
+                return;
+            }
+            
+            // 检查是否是反应模式下的提前点击
+            if (gameState.mode === 'reaction') {
+                console.log('反应模式检查', {
+                    started: gameState.started,
+                    greenTime: gameState.greenTime,
+                    ended: gameState.ended,
+                    falseStart: gameState.falseStart
+                });
+                
+                // 如果游戏已经开始但球还没变绿，就是提前点击
+                if (gameState.started && !gameState.greenTime) {
+                    console.log('检测到提前点击', { player });
+                    
+                    // 设置提前点击状态
+                    gameState.falseStart = true;
+                    gameState.falseStartPlayer = player;
+                    gameState.ended = true;
+                    gameState.started = false;
+                    
+                    // 清除反应定时器 - 确保球不会变绿
+                    console.log('尝试清除反应定时器:', gameState.reactionTimer);
+                    if (gameState.reactionTimer) {
+                        clearTimeout(gameState.reactionTimer);
+                        gameState.reactionTimer = null;
+                        console.log('定时器已清除');
+                    }
+                    
+                    // 播放错误音效
+                    playSound('buzz-sound');
+                    
+                    // 震动反馈
+                    if (navigator.vibrate) {
+                        navigator.vibrate([50, 50, 50]);
+                    }
+                    
+                    // 显示错误信息
+                    counter.textContent = 'False Start!';
+                    instruction.textContent = `${player === 'blue' ? '蓝方' : '红方'} 提前点击了！`;
+                    
+                    // 直接结束游戏，另一方获胜
+                    const winner = player === 'blue' ? 'red' : 'blue';
+                    console.log('结束游戏，获胜方:', winner);
+                    
+                    // 显示胜利者
+                    winnerDisplay.textContent = winner === 'blue' ? 'Blue Wins!' : 'Red Wins!';
+                    winnerDisplay.style.display = 'block';
+                    
+                    // 显示最终统计
+                    showFinalStats();
+                    
+                    // 播放胜利音效
+                    playSound('victory-sound');
+                    
+                    // 震动反馈
+                    if (navigator.vibrate) {
+                        navigator.vibrate([100, 50, 100]);
+                    }
+                    
+                    // 显示彩带效果
+                    createConfetti(winner);
+                    
+                    // 启用开始按钮
+                    startCPSButton.disabled = false;
+                    startReactionButton.disabled = false;
+                    startTimingButton.disabled = false;
+                    
+                    return;
+                }
+            }
+            
             if ((gameState.started || gameState.mode === 'reaction' || gameState.mode === 'timing') && !gameState.countingDown) {
                 const isBlue = player === 'blue';
                 const area = isBlue ? blueArea : redArea;
@@ -1437,10 +1577,8 @@
                             navigator.vibrate(50);
                         }
                     } else if (gameState.mode === 'reaction') {
-                        // 检查是否是提前点击
-                        if (!gameState.greenTime) {
-                            detectFalseStart(player);
-                        } else if (!gameState[reactionState] && !gameState.falseStart) {
+                        // 反应模式逻辑
+                        if (gameState.greenTime && !gameState.falseStart && !gameState[reactionState]) {
                             // 记录反应时间
                             gameState[reactionState] = Math.round(performance.now() - gameState.greenTime);
                             reactionText.textContent = `${isBlue ? '蓝方' : '红方'}反应: ${gameState[reactionState]} ms`;
