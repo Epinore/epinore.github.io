@@ -566,88 +566,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* 首页样式 */
-        .home-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            transition: opacity 0.5s ease;
-        }
-
-        .home-title {
-            font-size: 4em;
-            color: white;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        .home-subtitle {
-            font-size: 1.5em;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 50px;
-            text-align: center;
-        }
-
-        .menu-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .menu-btn {
-            padding: 20px 40px;
-            font-size: 1.5em;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            min-width: 300px;
-        }
-
-        .menu-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-            border-color: white;
-        }
-
-        /* 返回按钮 */
-        .back-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 1000;
-            font-weight: bold;
-            pointer-events: auto;
-            /* 确保可点击 */
-        }
-
-        .back-button:hover {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-        /* 隐藏类 */
-        .hidden {
-            display: none !important;
-        }
-
         /* 当显示最终统计时，允许鼠标事件 */
         .final-stats.show {
             pointer-events: auto;
@@ -765,7 +683,6 @@
             <button class="start-button" id="start-timing-button">Start Timing Duel</button>
         </div>
     </div>
-    </div>
 
     <!-- 胜利者显示 -->
     <div class="winner-display" id="winner-display"></div>
@@ -848,11 +765,7 @@
         const blueReaction = document.getElementById('blue-reaction');
         const redReaction = document.getElementById('red-reaction');
         const targetTimeEl = document.getElementById('target-time');
-        // Old mode buttons removed
-
-        // New DOM elements
-        const homeScreen = document.getElementById('home-screen');
-        const gameWrapper = document.getElementById('game-wrapper');
+        const cpsModeButton = document.getElementById('cps-mode-btn');
         const reactionModeButton = document.getElementById('reaction-mode-btn');
         const timingModeButton = document.getElementById('timing-mode-btn');
         const confettiContainer = document.getElementById('confetti-container');
@@ -970,6 +883,7 @@
 
         // 开始CPS游戏
         function startCPSGame() {
+            document.querySelector('.mode-selector').style.display = 'none';
             disableStartButtons();
             gameState.countingDown = true;
             counter.textContent = gameState.countdown;
@@ -1034,6 +948,7 @@
 
         // 开始反应游戏
         function startReactionGame() {
+            document.querySelector('.mode-selector').style.display = 'none';
             disableStartButtons();
 
             // 重置游戏状态
@@ -1138,6 +1053,7 @@
 
         // 开始Timing Duel游戏
         function startTimingGame() {
+            document.querySelector('.mode-selector').style.display = 'none';
             disableStartButtons();
             gameState.started = true;
             gameState.mode = 'timing';
@@ -1282,6 +1198,8 @@
 
         // 结束游戏函数
         function endGame(winner) {
+            // 恢复模式选择按钮
+            document.querySelector('.mode-selector').style.display = 'block';
             console.log('endGame函数被调用', { winner, gameState });
 
             // 设置游戏结束状态
@@ -1648,10 +1566,7 @@
             gameState.redCompleted = false;
 
             // 重置UI
-            winnerDisplay.style.display = 'none';
-            finalStats.style.opacity = '0';
-            finalStats.classList.remove('show');
-            // 重置UI
+            document.querySelector('.mode-selector').style.display = 'block';
             winnerDisplay.style.display = 'none';
             finalStats.style.opacity = '0';
             finalStats.classList.remove('show');
@@ -1751,6 +1666,9 @@
                     // 显示胜利者
                     winnerDisplay.textContent = winner === 'blue' ? 'Blue Wins!' : 'Red Wins!';
                     winnerDisplay.style.display = 'block';
+
+                    // 恢复模式选择按钮
+                    document.querySelector('.mode-selector').style.display = 'block';
 
                     // 显示最终统计
                     showFinalStats();
@@ -1995,8 +1913,44 @@
         });
 
         // 为开始按钮添加事件监听器
-        // 初始化：不需要自动进入模式，停留在主页
-        // switchMode('cps'); 
+        startCPSButton.addEventListener('click', () => {
+            if (gameState.mode !== 'cps') {
+                switchMode('cps');
+            }
+            resetGame();
+            startCPSGame();
+        });
+
+        startReactionButton.addEventListener('click', () => {
+            if (gameState.mode !== 'reaction') {
+                switchMode('reaction');
+            }
+            resetGame();
+            startReactionGame();
+        });
+
+        startTimingButton.addEventListener('click', () => {
+            if (gameState.mode !== 'timing') {
+                switchMode('timing');
+            }
+            resetGame();
+            startTimingGame();
+        });
+
+        cpsModeButton.addEventListener('click', () => {
+            switchMode('cps');
+        });
+
+        reactionModeButton.addEventListener('click', () => {
+            switchMode('reaction');
+        });
+
+        timingModeButton.addEventListener('click', () => {
+            switchMode('timing');
+        });
+
+        // 初始化游戏状态
+        switchMode('cps');
     </script>
 </body>
 
