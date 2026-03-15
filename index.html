@@ -30,43 +30,286 @@
             position: relative;
             overflow: hidden;
             background-color: white;
-            border-radius: 20px;
-            margin: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 0;
+            /* No rounded corners for accurate click areas */
+            margin: 0;
+            /* No margin for full screen coverage */
+            box-shadow: none;
+            z-index: 10;
+            /* Ensure interaction layer is above visual layer */
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            width: 100%;
+            height: 100%;
         }
 
-        /* 玩家区域 */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            #blue-area,
+            #red-area {
+                width: 100% !important;
+                /* Force full width on mobile */
+                height: 50% !important;
+                /* Force 50% height on mobile */
+            }
+
+            .visual-layer {
+                flex-direction: column;
+            }
+
+            #visual-blue,
+            #visual-red {
+                width: 100% !important;
+                height: 50%;
+                /* Start at 50% height */
+            }
+
+            .visual-divider {
+                width: 100%;
+                height: 4px;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: top 0.1s ease-out;
+                /* Animate top instead of left */
+            }
+        }
+
+        /* .player-area - CRITICAL: Must be exactly 50% for fair gameplay */
         .player-area {
+            width: 50%;
+            /* Exactly 50% for fair split */
+            height: 100%;
+            /* Full height */
             transition: width 0.1s ease-out, background-color 0.5s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            border-radius: 15px;
+            border-radius: 0;
+            /* No rounded corners - critical for accurate click detection */
+            margin: 0;
+            padding: 0;
+            border: none;
         }
 
-        /* CPS模式样式 */
+        /* CPS模式样式 - No borders to ensure click area alignment */
         .cps-mode #blue-area {
-            background: linear-gradient(to right, #4DA9FF, #73C2FF);
-            border: 3px solid #2980b9;
+            background: transparent;
+            border: none;
+        }
+
+        /* Visual Layer Styles */
+        .visual-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: flex;
+            pointer-events: none;
+            /* purely visual */
+        }
+
+        /* Update CPS Mode to be transparent */
+        .cps-mode .game-container {
+            background-color: transparent;
+            box-shadow: none;
+            /* Remove shadow to blend with visual layer */
+        }
+
+        .cps-mode .player-area {
+            background: transparent !important;
+            /* Visuals handled by visual-layer */
+            border: none;
+        }
+
+        .cps-mode .divider {
+            display: none;
+            /* Hide original divider in CPS mode */
+        }
+
+        /* Helper class to hide game description on mobile */
+        @media (max-width: 768px) {
+            .mobile-hidden {
+                display: none !important;
+            }
+        }
+
+        #visual-blue,
+        #visual-red {
+            height: 100%;
+            width: 50%;
+            /* Start at 50% */
+            transition: width 0.1s ease-out, height 0.1s ease-out;
+        }
+
+        #visual-blue {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        #visual-red {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        }
+
+        .visual-divider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            transition: left 0.1s ease-out;
+        }
+
+        /* Full Screen Updates for Reaction & Timing */
+        .reaction-mode .game-container,
+        .timing-mode .game-container {
+            margin: 0;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .reaction-mode .player-area,
+        .timing-mode .player-area {
+            border: none;
+            border-radius: 0 !important;
+            /* Remove borders and rounded corners for immersive full-screen feel */
+        }
+
+        /* 反应模式样式 - Premium Gradients */
+        .reaction-mode #blue-area {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
+        .reaction-mode #red-area {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        }
+
+        /* Timing模式样式 - Premium Gradients */
+        .timing-mode #blue-area {
+            background: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .timing-mode #red-area {
+            background: linear-gradient(to top left, #ff0844 0%, #ffb199 100%);
+        }
+
+        .fixed-divider {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            border-left: 2px dashed rgba(255, 255, 255, 0.6);
+            transform: translateX(-50%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .visual-divider {
+                width: 100% !important;
+                /* Force full width on mobile */
+                height: 4px !important;
+                /* Fixed height on mobile */
+                left: 0 !important;
+                top: 50%;
+                transform: translateY(-50%) !important;
+                transition: top 0.1s ease-out !important;
+            }
+
+            .fixed-divider {
+                left: 0;
+                right: 0;
+                top: 50%;
+                width: 100%;
+                height: 2px;
+                border-left: none;
+                border-top: 2px dashed rgba(255, 255, 255, 0.6);
+                transform: translateY(-50%);
+            }
+        }
+
+        /* Update CPS Mode to be transparent */
+        .cps-mode .player-area {
+            background: transparent !important;
+            /* Visuals handled by visual-layer */
+            border: none;
+        }
+
+        .cps-mode #blue-area {
+            /* Keep border for debugging or remove? Removing as per plan */
+            /* border: 3px solid #005f99; */
+            border: none;
         }
 
         .cps-mode #red-area {
-            background: linear-gradient(to left, #FF6B6B, #FF8E8E);
-            border: 3px solid #c0392b;
+            /* border: 3px solid #c0392b; */
+            border: none;
         }
 
-        /* 反应模式样式 */
-        .reaction-mode #blue-area,
+        /* 反应模式样式 - Reaction mode still needs its own background? 
+           Request said "CPS Battle Logic". Assuming Reaction mode keeps its own style or uses visual layer too?
+           User request: "现在改一下CPS对战的逻辑". So Reaction mode should remain as is.
+           However, .player-area is shared. 
+           We need to ensure Reaction mode still has backgrounds if we made .player-area transparent.
+           My CSS above targets `.cps-mode .player-area`. so Reaction mode should be safe if it uses `.reaction-mode .player-area`.
+        */
+
+        /* Full Screen Updates for Reaction & Timing */
+        .reaction-mode .game-container,
+        .timing-mode .game-container {
+            margin: 0;
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .reaction-mode .player-area,
+        .timing-mode .player-area {
+            border: none;
+            /* Remove borders for immersive feel */
+        }
+
+        /* 反应模式样式 - Premium Gradients */
+        .reaction-mode #blue-area {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+        }
+
         .reaction-mode #red-area {
-            background-color: #f0f8ff;
-            border: 3px solid #3399ff;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
         }
 
         #blue-area,
         #red-area {
             width: 50%;
+            height: 100%;
+            /* Ensure full height for interaction */
+        }
+
+        /* 分界线 - Make it full screen in these modes */
+        .reaction-mode .divider,
+        .timing-mode .divider {
+            top: 0;
+            bottom: 0;
+            border-radius: 0;
+            background-color: rgba(255, 255, 255, 0.5);
+            /* subtler divider */
         }
 
         /* 分界线 */
@@ -98,8 +341,7 @@
 
         /* 只对真正的按钮恢复点击事件，文字等元素保持穿透 */
         .mode-button,
-        .start-button,
-        #play-again-button {
+        .start-button {
             pointer-events: auto;
         }
 
@@ -249,32 +491,39 @@
         /* 胜利者显示 */
         .winner-display {
             position: absolute;
-            top: 50%;
+            top: 30%;
+            /* Move up */
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 6em;
-            font-weight: bold;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 5em;
+            font-weight: 800;
             color: #333;
-            text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), 0 0 30px rgba(76, 175, 80, 0.5);
+            text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.1);
             display: none;
-            z-index: 30;
-            animation: victory-flash 0.5s ease-in-out infinite alternate;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(76, 175, 80, 0.6);
+            z-index: 101;
+            /* Above stats */
+            background: transparent;
+            /* Remove box, just text? Or keep box? Text looks cleaner if huge. */
+            /* User guide: "Improve UI". Clean text is better for "Victory". */
+            padding: 0;
+            box-shadow: none;
+            animation: victory-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            white-space: nowrap;
         }
 
-        @keyframes victory-flash {
+        @keyframes victory-pop {
             0% {
-                opacity: 0.8;
-                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+
+            70% {
+                transform: translate(-50%, -50%) scale(1.2);
             }
 
             100% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-                text-shadow: 7px 7px 14px rgba(0, 0, 0, 0.25), 0 0 40px rgba(76, 175, 80, 0.7);
+                transform: translate(-50%, -50%) scale(1);
             }
         }
 
@@ -411,15 +660,13 @@
             transition: opacity 0.3s ease;
         }
 
-        /* Timing模式样式 */
+        /* Timing模式样式 - Premium Gradients */
         .timing-mode #blue-area {
-            background: linear-gradient(to right, #3498db, #2980b9);
-            border: 3px solid #1f618d;
+            background: linear-gradient(to bottom right, #4facfe 0%, #00f2fe 100%);
         }
 
         .timing-mode #red-area {
-            background: linear-gradient(to left, #e74c3c, #c0392b);
-            border: 3px solid #922b21;
+            background: linear-gradient(to top left, #ff0844 0%, #ffb199 100%);
         }
 
         /* 秒表显示 */
@@ -547,23 +794,42 @@
         }
 
         /* 最终结果显示 */
+        /* 最终结果显示 - Premium UI */
         .final-stats {
             position: absolute;
-            bottom: 100px;
-            left: 0;
-            right: 0;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            /* Center perfectly */
+            min-width: 400px;
             text-align: center;
             font-size: 1.2em;
-            z-index: 25;
+            z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Bouncy transition */
             font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 0 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+            /* Glassmorphism */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 30px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .final-stats.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+
+        .final-stats div {
+            margin: 10px 0;
+            color: #2c3e50;
         }
 
         /* 当显示最终统计时，允许鼠标事件 */
@@ -588,10 +854,21 @@
                 width: 100%;
                 height: 4px;
                 left: 0 !important;
-                bottom: auto;
-                /* 重置 desktop 样式的 bottom */
+                bottom: auto !important;
+                /* Force reset bottom */
                 top: 50%;
+                transform: translateY(-50%);
                 transition: top 0.1s ease-out;
+            }
+
+            /* Ensure Reaction/Timing dividers are also correct on mobile */
+            .reaction-mode .divider,
+            .timing-mode .divider {
+                top: 50% !important;
+                bottom: auto !important;
+                height: 4px !important;
+                width: 100% !important;
+                border-radius: 0;
             }
 
             /* 调整移动端文字大小 */
@@ -619,20 +896,127 @@
             .confetti-container {
                 overflow: hidden;
             }
+
+            /* Mobile Stats visibility - only in CPS mode */
+            .cps-mode .mobile-stats {
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 20;
+                pointer-events: none;
+                width: 100%;
+            }
+
+            .mobile-score {
+                font-size: 5em;
+                font-weight: bold;
+                color: rgba(255, 255, 255, 0.9);
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            }
+
+            .mobile-cps {
+                font-size: 1.5em;
+                color: rgba(255, 255, 255, 0.8);
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Hide desktop stats and instructions on mobile when CPS game started OR ended (always) */
+            body.cps-mode .game-time,
+            body.cps-mode .scores,
+            body.cps-mode .cps-display {
+                display: none !important;
+            }
+
+            /* Only hide instructions when game is actually running */
+            body.game-started.cps-mode .instruction {
+                display: none !important;
+            }
+
+            /* Reaction Mode Mobile Simplification (User Request) */
+            /* Always hide scores and reaction times in mobile reaction mode */
+            body.reaction-mode .scores,
+            body.reaction-mode .reaction-time {
+                display: none !important;
+            }
+
+            /* Hide instructions/counter only when game is running (Wait for green, etc) */
+            body.reaction-mode.game-started .counter,
+            body.reaction-mode.game-started .instruction {
+                display: none !important;
+            }
+
+            /* Timing Mode Mobile Simplification (User Request) */
+            /* Hide scores and game time in mobile timing mode */
+            body.timing-mode .scores,
+            body.timing-mode .game-time {
+                display: none !important;
+            }
+
+            /* Center Start Buttons on Mobile (User Request) */
+            .button-container {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%;
+                margin: 0;
+                z-index: 100;
+                pointer-events: none;
+                /* Let clicks pass through container */
+            }
+
+            /* Ensure buttons themselves are clickable */
+            .button-container .start-button {
+                pointer-events: auto;
+            }
+        }
+
+        /* Default mobile stats hidden */
+        .mobile-stats {
+            display: none;
+        }
+
+        /* ROBUST FIX: Force hide controls when game is started to prevent ghost clicks */
+        body.game-started .mode-selector,
+        body.game-started .start-button,
+        body.game-started .button-container {
+            display: none !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
 
 <body class="cps-mode">
+    <!-- 视觉层：用于显示动态变化的领地 -->
+    <div class="visual-layer">
+        <div id="visual-blue"></div>
+        <div class="visual-divider"></div>
+        <div class="fixed-divider"></div> <!-- Interactive Zone Indicator -->
+        <div id="visual-red"></div>
+    </div>
+
     <!-- 游戏容器 -->
     <div class="game-container">
         <div class="player-area" id="blue-area">
             <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+            <div class="mobile-stats" id="blue-mobile-stats">
+                <div class="mobile-score">0</div>
+                <div class="mobile-cps">CPS: 0.00</div>
+            </div>
             <div class="reaction-ball" id="blue-ball"></div>
         </div>
         <div class="divider"></div>
         <div class="player-area" id="red-area">
             <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+            <div class="mobile-stats" id="red-mobile-stats">
+                <div class="mobile-score">0</div>
+                <div class="mobile-cps">CPS: 0.00</div>
+            </div>
             <div class="reaction-ball" id="red-ball"></div>
         </div>
     </div>
@@ -741,7 +1125,8 @@
             blueStopwatchInterval: null,
             redStopwatchInterval: null,
             blueCompleted: false,
-            redCompleted: false
+            redCompleted: false,
+            ignoreInputsUntil: 0 // Prevents synthetic ghost clicks dropping through Start button
         };
 
         // DOM元素
@@ -772,6 +1157,11 @@
         const finalStats = document.getElementById('final-stats');
         const blueBall = document.getElementById('blue-ball');
         const redBall = document.getElementById('red-ball');
+
+        // Mobile Stats Elements - Removing globals to avoid stale references
+        // const blueMobileStats = document.getElementById('blue-mobile-stats');
+        // const redMobileStats = document.getElementById('red-mobile-stats');
+        // ... (using local queries in update functions instead)
 
         // 音效元素
         const tickSound = document.getElementById('tick-sound');
@@ -807,6 +1197,10 @@
             if (mode === 'cps') {
                 counter.textContent = 'CPS 对战模式';
                 instruction.textContent = '点击更快以扩大你的区域';
+                // Hide description on mobile
+                counter.classList.add('mobile-hidden');
+                instruction.classList.add('mobile-hidden');
+
                 cpsDisplay.style.opacity = '1';
                 gameTime.style.opacity = '1';
                 reactionTimeDisplay.style.opacity = '0';
@@ -815,9 +1209,17 @@
                 // 重置CPS模式的UI - 不添加反应球
                 blueArea.innerHTML = `
                     <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="mobile-stats" id="blue-mobile-stats">
+                        <div class="mobile-score">0</div>
+                        <div class="mobile-cps">CPS: 0.00</div>
+                    </div>
                 `;
                 redArea.innerHTML = `
                     <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="mobile-stats" id="red-mobile-stats">
+                        <div class="mobile-score">0</div>
+                        <div class="mobile-cps">CPS: 0.00</div>
+                    </div>
                 `;
 
                 // 清除对已移除元素的引用
@@ -826,6 +1228,10 @@
             } else if (mode === 'reaction') {
                 counter.textContent = '反应力对战模式';
                 instruction.textContent = '等待屏幕变绿后立即点击';
+                // Hide description on mobile
+                counter.classList.add('mobile-hidden');
+                instruction.classList.add('mobile-hidden');
+
                 cpsDisplay.style.opacity = '0';
                 gameTime.style.opacity = '0';
                 reactionTimeDisplay.style.opacity = '1';
@@ -858,6 +1264,10 @@
             } else if (mode === 'timing') {
                 counter.textContent = '时间精准度对战模式';
                 instruction.textContent = '尽可能精准地停止在目标时间';
+                // Hide description on mobile
+                counter.classList.add('mobile-hidden');
+                instruction.classList.add('mobile-hidden');
+
                 cpsDisplay.style.opacity = '0';
                 gameTime.style.opacity = '1';
                 reactionTimeDisplay.style.opacity = '0';
@@ -881,13 +1291,25 @@
             }
         }
 
-        // 开始CPS游戏
+        // 开始CPS测试
         function startCPSGame() {
             document.querySelector('.mode-selector').style.display = 'none';
+            // Hide start button to prevent obstruction
+            startCPSButton.style.display = 'none';
+
+            // Tag body for CSS visibility logic immediately (hides desktop stats on mobile during countdown)
+            document.body.classList.add('game-started');
+
+            // Absorb synthetic clicks
+            gameState.ignoreInputsUntil = performance.now() + 500;
+
             disableStartButtons();
             gameState.countingDown = true;
             counter.textContent = gameState.countdown;
             counter.classList.add('countdown');
+            // Show counter on mobile for countdown
+            counter.classList.remove('mobile-hidden');
+            instruction.classList.remove('mobile-hidden'); // Although hidden by clean layout rule, remove this for consistency
 
             // 播放开始音效
             playSound('start-sound');
@@ -933,6 +1355,8 @@
                     clearInterval(gameState.countdownInterval);
                     gameState.countingDown = false;
                     gameState.started = true;
+                    // game-started class already added at start
+
                     gameState.gameStartTime = performance.now();
                     counter.textContent = '';
                     counter.classList.remove('countdown');
@@ -949,7 +1373,15 @@
         // 开始反应游戏
         function startReactionGame() {
             document.querySelector('.mode-selector').style.display = 'none';
+            // Hide start button completely (invisible + not clickable)
+            startReactionButton.style.display = 'none';
             disableStartButtons();
+
+            // Tag body for CSS visibility logic
+            document.body.classList.add('game-started');
+
+            // Absorb synthetic clicks
+            gameState.ignoreInputsUntil = performance.now() + 500;
 
             // 重置游戏状态
             gameState.started = true;
@@ -958,8 +1390,13 @@
             gameState.greenTime = 0;
             gameState.reactionTimer = null; // 确保定时器被重置
 
+            gameState.reactionTimer = null; // 确保定时器被重置
+
             counter.textContent = '等待变绿...';
             instruction.textContent = '不要提前点击！';
+            // Show text on mobile for game
+            counter.classList.remove('mobile-hidden');
+            instruction.classList.remove('mobile-hidden');
 
             console.log('反应力游戏开始');
 
@@ -1054,7 +1491,17 @@
         // 开始Timing Duel游戏
         function startTimingGame() {
             document.querySelector('.mode-selector').style.display = 'none';
+            // Hide start button completely (invisible + not clickable)
+            // Hide start button completely (invisible + not clickable)
+            startTimingButton.style.display = 'none';
             disableStartButtons();
+
+            // Tag body for CSS visibility logic
+            document.body.classList.add('game-started');
+
+            // Absorb synthetic clicks
+            gameState.ignoreInputsUntil = performance.now() + 500;
+
             gameState.started = true;
             gameState.mode = 'timing';
 
@@ -1093,6 +1540,10 @@
             startCPSButton.disabled = true;
             startReactionButton.disabled = true;
             startTimingButton.disabled = true;
+            // Also remove from click flow entirely
+            startCPSButton.style.pointerEvents = 'none';
+            startReactionButton.style.pointerEvents = 'none';
+            startTimingButton.style.pointerEvents = 'none';
         }
 
         // 启用开始按钮
@@ -1100,11 +1551,22 @@
             startCPSButton.disabled = false;
             startReactionButton.disabled = false;
             startTimingButton.disabled = false;
+            // Restore click flow
+            startCPSButton.style.pointerEvents = '';
+            startReactionButton.style.pointerEvents = '';
+            startTimingButton.style.pointerEvents = '';
         }
 
         // 更新游戏状态（CPS模式）
         function updateGameState() {
             if (gameState.mode === 'cps' && gameState.started) {
+                // Update Mobile Stats
+                const blueMobileScore = document.querySelector('#blue-mobile-stats .mobile-score');
+                const redMobileScore = document.querySelector('#red-mobile-stats .mobile-score');
+
+                if (blueMobileScore) blueMobileScore.textContent = gameState.blueScore;
+                if (redMobileScore) redMobileScore.textContent = gameState.redScore;
+
                 const difference = gameState.blueScore - gameState.redScore;
                 const maxDifference = 30;
 
@@ -1116,30 +1578,41 @@
                 blueWidth = Math.max(0, Math.min(100, blueWidth));
                 redWidth = Math.max(0, Math.min(100, redWidth));
 
-                // 更新DOM
-                // 检测是否为移动端
+                // 更新DOM - 视觉层
+                const visualBlue = document.getElementById('visual-blue');
+                const visualRed = document.getElementById('visual-red');
+                const visualDivider = document.querySelector('.visual-divider');
                 const isMobile = window.innerWidth <= 768;
 
                 if (isMobile) {
                     // 移动端：更新高度和Top
-                    blueArea.style.height = `${blueWidth}%`; // blueWidth其实是占比，这里变量名复用
-                    redArea.style.height = `${redWidth}%`;
-                    divider.style.top = `${blueWidth}%`;
+                    visualBlue.style.height = `${blueWidth}%`; // logic uses 'width' var name for percentage
+                    visualRed.style.height = `${redWidth}%`;
+                    visualDivider.style.top = `${blueWidth}%`;
 
-                    // 重置宽度和Left
-                    blueArea.style.width = '100%';
-                    redArea.style.width = '100%';
-                    divider.style.left = '0';
+                    // Reset widths
+                    visualBlue.style.width = '100%';
+                    visualRed.style.width = '100%';
+                    visualDivider.style.left = '50%';
+                    visualDivider.style.transform = 'translate(-50%, -50%)'; // Reset X transform, keep Y centering from CSS?
+                    // Actually CSS says: top 50%; transform: translateY(-50%); for default.
+                    // Here we are setting top dynamically. 
+                    // If we set top to 70%, we probably want transform: translateY(-50%) to keep it centered on the line? Yes.
+                    visualDivider.style.transform = 'translateY(-50%)';
+
                 } else {
                     // 桌面端：更新宽度和Left
-                    blueArea.style.width = `${blueWidth}%`;
-                    redArea.style.width = `${redWidth}%`;
-                    divider.style.left = `${blueWidth}%`;
+                    visualBlue.style.width = `${blueWidth}%`;
+                    visualRed.style.width = `${redWidth}%`;
+                    visualDivider.style.left = `${blueWidth}%`;
 
-                    // 重置高度和Top
-                    blueArea.style.height = '100%';
-                    redArea.style.height = '100%';
-                    divider.style.top = '10%'; // 恢复CSS默认
+                    // Reset heights
+                    visualBlue.style.height = '100%';
+                    visualRed.style.height = '100%';
+                    visualDivider.style.top = '0';
+                    visualDivider.style.bottom = '0';
+                    visualDivider.style.height = 'auto';
+                    visualDivider.style.transform = 'translateX(-50%)';
                 }
 
                 blueScoreEl.textContent = `蓝方: ${gameState.blueScore}`;
@@ -1161,6 +1634,13 @@
 
                 blueCPS.textContent = `蓝方 CPS: ${blueCpsValue}`;
                 redCPS.textContent = `红方 CPS: ${redCpsValue}`;
+
+                // Update Mobile Stats
+                const blueMobileCPS = document.querySelector('#blue-mobile-stats .mobile-cps');
+                const redMobileCPS = document.querySelector('#red-mobile-stats .mobile-cps');
+
+                if (blueMobileCPS) blueMobileCPS.textContent = `CPS: ${blueCpsValue}`;
+                if (redMobileCPS) redMobileCPS.textContent = `CPS: ${redCpsValue}`;
 
                 if (gameState.started) {
                     requestAnimationFrame(updateCPS);
@@ -1265,16 +1745,17 @@
             // 显示彩带效果
             createConfetti(winner);
 
-            // 立即启用所有开始按钮，不使用延迟
+            // 立即启用所有开始按钮
             startCPSButton.disabled = false;
             startReactionButton.disabled = false;
             startTimingButton.disabled = false;
 
-            console.log('游戏结束，按钮已启用:', {
-                startCPSButton: !startCPSButton.disabled,
-                startReactionButton: !startReactionButton.disabled,
-                startTimingButton: !startTimingButton.disabled
-            });
+            // Remove game-started class to allow controls to reappear (via CSS)
+            document.body.classList.remove('game-started');
+
+            // Clean up UI for result display
+            counter.textContent = '';
+            instruction.textContent = '';
         }
 
         // 显示最终统计信息
@@ -1571,13 +2052,54 @@
             finalStats.style.opacity = '0';
             finalStats.classList.remove('show');
 
-            // 重置区域大小和分割线位置 (同时重置宽高以适配不同屏幕)
+            finalStats.style.opacity = '0';
+            finalStats.classList.remove('show');
+
+            // Reset game-started class
+            document.body.classList.remove('game-started');
+
+            // Reset mobile stats
+            const blueMobileScore = document.querySelector('#blue-mobile-stats .mobile-score');
+            const redMobileScore = document.querySelector('#red-mobile-stats .mobile-score');
+            const blueMobileCPS = document.querySelector('#blue-mobile-stats .mobile-cps');
+            const redMobileCPS = document.querySelector('#red-mobile-stats .mobile-cps');
+
+            if (blueMobileScore) blueMobileScore.textContent = '0';
+            if (redMobileScore) redMobileScore.textContent = '0';
+            if (blueMobileCPS) blueMobileCPS.textContent = 'CPS: 0.00';
+            if (redMobileCPS) redMobileCPS.textContent = 'CPS: 0.00';
+
+            // 重置区域大小和视觉层
+            const visualBlue = document.getElementById('visual-blue');
+            const visualRed = document.getElementById('visual-red');
+            const visualDivider = document.querySelector('.visual-divider');
+
+            // 重置视觉层为50% (Desktop default, CSS will handle Mobile via media query if we clear inline styles, but good to be explicit for transitions)
+            if (visualBlue) visualBlue.style.width = '50%';
+            if (visualRed) visualRed.style.width = '50%';
+            if (visualBlue) visualBlue.style.height = '100%'; // Default desktop
+            if (visualRed) visualRed.style.height = '100%';
+            if (visualDivider) {
+                visualDivider.style.left = '50%';
+                visualDivider.style.top = '0';
+                visualDivider.style.height = 'auto';
+                visualDivider.style.bottom = '0';
+                visualDivider.style.transform = 'translateX(-50%)';
+            }
+
+            // 清除交互层的内联样式，使其回到CSS定义的50%
             blueArea.style.width = '';
             redArea.style.width = '';
             blueArea.style.height = '';
             redArea.style.height = '';
-            divider.style.left = '';
-            divider.style.top = '';
+            // divider.style.left = ''; // original divider is hidden/removed? Wait, original structure kept divider div...
+            // Check HTML: <div class="divider"></div> is still there. 
+            // We should hide the original divider or make it transparent too?
+            // "Adding visual-divider" implies we use that now.
+            // The original divider provided the white line.
+            // Plan: I should probably hide the original divider in .cps-mode or just remove styling.
+            divider.style.display = 'none'; // Hide original divider in interaction layer, visual layer has one
+
             blueScoreEl.textContent = '蓝方: 0';
             redScoreEl.textContent = '红方: 0';
             blueCPS.textContent = '蓝方 CPS: 0.00';
@@ -1600,18 +2122,19 @@
             // 启用按钮
             enableStartButtons();
 
-            // 设置初始提示
-            if (gameState.mode === 'cps') {
-                counter.textContent = 'CPS 对战模式';
-                instruction.textContent = '点击下方按钮开始游戏';
-            } else {
-                counter.textContent = '反应力对战模式';
-                instruction.textContent = '点击下方按钮开始游戏';
-            }
+            // Clean up UI for result display
+            counter.textContent = '';
+            instruction.textContent = '';
         }
 
         // 处理玩家操作的函数
         function handlePlayerAction(player) {
+            // 防御：忽略启动时的综合/幽灵点击事件 (Synthetic clicks)
+            if (performance.now() < gameState.ignoreInputsUntil) {
+                console.log('忽略幽灵点击 (Deadzone)', { player, timeRemaining: gameState.ignoreInputsUntil - performance.now() });
+                return;
+            }
+
             console.log('handlePlayerAction被调用', { player, gameState });
 
             // 检查是否已经结束游戏
@@ -1879,6 +2402,8 @@
 
         // 鼠标点击事件监听 - 蓝方区域
         blueArea.addEventListener('mousedown', (event) => {
+            // Only handle clicks when game is truly in progress
+            if (!gameState.started && !gameState.countingDown) return;
             handlePlayerAction('blue');
         });
 
@@ -1892,6 +2417,8 @@
 
         // 鼠标点击事件监听 - 红方区域
         redArea.addEventListener('mousedown', (event) => {
+            // Only handle clicks when game is truly in progress
+            if (!gameState.started && !gameState.countingDown) return;
             handlePlayerAction('red');
         });
 
@@ -1914,6 +2441,8 @@
 
         // 为开始按钮添加事件监听器
         startCPSButton.addEventListener('click', () => {
+            // Guard: prevent restart during active game or countdown
+            if (gameState.started || gameState.countingDown) return;
             if (gameState.mode !== 'cps') {
                 switchMode('cps');
             }
@@ -1922,6 +2451,8 @@
         });
 
         startReactionButton.addEventListener('click', () => {
+            // Guard: prevent restart during active game or countdown
+            if (gameState.started || gameState.countingDown) return;
             if (gameState.mode !== 'reaction') {
                 switchMode('reaction');
             }
@@ -1930,6 +2461,8 @@
         });
 
         startTimingButton.addEventListener('click', () => {
+            // Guard: prevent restart during active game or countdown
+            if (gameState.started || gameState.countingDown) return;
             if (gameState.mode !== 'timing') {
                 switchMode('timing');
             }
@@ -1938,14 +2471,17 @@
         });
 
         cpsModeButton.addEventListener('click', () => {
+            if (gameState.started || gameState.countingDown) return;
             switchMode('cps');
         });
 
         reactionModeButton.addEventListener('click', () => {
+            if (gameState.started || gameState.countingDown) return;
             switchMode('reaction');
         });
 
         timingModeButton.addEventListener('click', () => {
+            if (gameState.started || gameState.countingDown) return;
             switchMode('timing');
         });
 
