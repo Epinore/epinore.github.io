@@ -651,13 +651,34 @@
 
         /* 目标时间显示 */
         .target-time {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 20px 0;
-            color: #e67e22;
-            text-shadow: 2px 2px 4px rgba(230, 126, 34, 0.3);
+            font-size: 2.2em;
+            font-weight: 800;
+            margin: 20px auto;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            padding: 15px 35px;
+            border-radius: 50px;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            display: inline-block;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .target-time {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 30;
+                font-size: 1.4em;
+                padding: 10px 24px;
+            }
         }
 
         /* Timing模式样式 - Premium Gradients */
@@ -981,6 +1002,242 @@
             display: none;
         }
 
+        /* Settings Icon */
+        .settings-icon {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 300;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .settings-icon:hover {
+            transform: rotate(90deg);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .settings-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: rgba(50, 50, 50, 0.8);
+        }
+
+        /* Settings Modal Overlay */
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .settings-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 30px 35px;
+            width: 90%;
+            max-width: 420px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .settings-overlay.show .settings-panel {
+            transform: scale(1);
+        }
+
+        .settings-panel h2 {
+            margin: 0 0 20px 0;
+            font-size: 1.5em;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .settings-section h3 {
+            margin: 0 0 12px 0;
+            font-size: 1.1em;
+            color: #34495e;
+        }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .settings-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-row label {
+            font-size: 0.95em;
+            color: #555;
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+
+        .settings-row input[type="number"] {
+            width: 80px;
+            padding: 8px 10px;
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+            font-size: 1em;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.2s ease;
+            outline: none;
+        }
+
+        .settings-row input[type="number"]:focus {
+            border-color: #4facfe;
+        }
+
+        .settings-row select {
+            padding: 8px 10px;
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+            font-size: 1em;
+            background: rgba(255, 255, 255, 0.8);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .settings-row select:focus {
+            border-color: #4facfe;
+        }
+
+        /* Color Palette */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .color-swatch {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .color-swatch.selected {
+            border-color: #333;
+            transform: scale(1.1);
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px #333;
+        }
+
+        .settings-row input[type="text"] {
+            width: 120px;
+            padding: 8px 10px;
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+            font-size: 1em;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.2s ease;
+            outline: none;
+        }
+
+        .settings-row input[type="text"]:focus {
+            border-color: #4facfe;
+        }
+
+        .key-input {
+            width: 50px !important;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .settings-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .settings-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-btn-save {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .settings-btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.5);
+        }
+
+        .settings-btn-cancel {
+            background: rgba(0, 0, 0, 0.06);
+            color: #555;
+        }
+
+        .settings-btn-cancel:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hide settings icon during active game */
+        body.game-started .settings-icon {
+            display: none;
+        }
+
         /* ROBUST FIX: Force hide controls when game is started to prevent ghost clicks */
         body.game-started .mode-selector,
         body.game-started .start-button,
@@ -992,6 +1249,100 @@
 </head>
 
 <body class="cps-mode">
+    <!-- 设置图标 -->
+    <div class="settings-icon" id="settings-icon" title="设置">
+        <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+    </div>
+
+    <!-- 设置模态框 -->
+    <div class="settings-overlay" id="settings-overlay">
+        <div class="settings-panel">
+            <h2>⚙️ 游戏设置</h2>
+
+            <div class="settings-section">
+                <h3>🖱️ CPS 对战模式</h3>
+                <div class="settings-row">
+                    <label>领先分数获胜</label>
+                    <input type="number" id="setting-cps-win" min="5" max="200" value="30">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>⚡ 反应力对战模式</h3>
+                <div class="settings-row">
+                    <label>最短等待(秒)</label>
+                    <input type="number" id="setting-reaction-min" min="1" max="30" step="0.5" value="5">
+                </div>
+                <div class="settings-row">
+                    <label>最长等待(秒)</label>
+                    <input type="number" id="setting-reaction-max" min="2" max="60" step="0.5" value="14">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>⏱️ 卡秒对战模式</h3>
+                <div class="settings-row">
+                    <label>最小目标(秒)</label>
+                    <input type="number" id="setting-timing-min" min="0" max="60" step="0.1" value="0">
+                </div>
+                <div class="settings-row">
+                    <label>最大目标(秒)</label>
+                    <input type="number" id="setting-timing-max" min="0.5" max="120" step="0.1" value="5">
+                </div>
+                <div class="settings-row">
+                    <label>时间精度</label>
+                    <select id="setting-timing-precision">
+                        <option value="0">整数 (1s)</option>
+                        <option value="1" selected>1位小数 (0.1s)</option>
+                        <option value="2">2位小数 (0.01s)</option>
+                        <option value="3">3位小数 (0.001s)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🎮 玩家按键</h3>
+                <div class="settings-row">
+                    <label>蓝方按键</label>
+                    <input type="text" id="setting-blue-key" class="key-input" maxlength="1" value="S">
+                </div>
+                <div class="settings-row">
+                    <label>红方按键</label>
+                    <input type="text" id="setting-red-key" class="key-input" maxlength="1" value="L">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>✏️ 玩家名称</h3>
+                <div class="settings-row">
+                    <label>蓝方名称</label>
+                    <input type="text" id="setting-blue-name" maxlength="10" value="蓝方">
+                </div>
+                <div class="settings-row">
+                    <label>红方名称</label>
+                    <input type="text" id="setting-red-name" maxlength="10" value="红方">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🎨 蓝方颜色</h3>
+                <div class="color-palette" id="blue-color-palette">
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🎨 红方颜色</h3>
+                <div class="color-palette" id="red-color-palette">
+                </div>
+            </div>
+
+            <div class="settings-buttons">
+                <button class="settings-btn settings-btn-cancel" id="settings-cancel">取消</button>
+                <button class="settings-btn settings-btn-save" id="settings-save">保存</button>
+            </div>
+        </div>
+    </div>
+
     <!-- 视觉层：用于显示动态变化的领地 -->
     <div class="visual-layer">
         <div id="visual-blue"></div>
@@ -1088,6 +1439,206 @@
     <audio id="green-light" preload="auto"></audio>
 
     <script>
+        // 可选颜色列表
+        const colorPresets = [
+            { name: '天蓝', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+            { name: '宝蓝', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+            { name: '薄荷', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' },
+            { name: '翡翠', gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)' },
+            { name: '紫罗兰', gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)' },
+            { name: '薰衣草', gradient: 'linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)' },
+            { name: '珊瑚', gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)' },
+            { name: '火焰', gradient: 'linear-gradient(135deg, #ff0844 0%, #ffb199 100%)' },
+            { name: '日落', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
+            { name: '蜜橙', gradient: 'linear-gradient(135deg, #f7971e 0%, #ffd200 100%)' },
+            { name: '深海', gradient: 'linear-gradient(135deg, #0c3483 0%, #a2b6df 100%)' },
+            { name: '暗夜', gradient: 'linear-gradient(135deg, #232526 0%, #414345 100%)' },
+            { name: '玫瑰金', gradient: 'linear-gradient(135deg, #f5af19 0%, #f12711 100%)' },
+            { name: '青柠', gradient: 'linear-gradient(135deg, #b2fefa 0%, #0ed2f7 100%)' },
+            { name: '樱花', gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' },
+            { name: '极光', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
+            { name: '星空', gradient: 'linear-gradient(135deg, #2b5876 0%, #4e4376 100%)' },
+            { name: '鲜红', gradient: 'linear-gradient(135deg, #eb3349 0%, #f45c43 100%)' },
+        ];
+
+        // 游戏设置（可通过设置面板修改）
+        const gameSettings = {
+            cpsWinScore: 30,
+            reactionMinWait: 5,
+            reactionMaxWait: 14,
+            timingMinTarget: 0,
+            timingMaxTarget: 5,
+            timingPrecision: 1,
+            blueKey: 's',
+            redKey: 'l',
+            blueName: '蓝方',
+            redName: '红方',
+            blueColor: 0,   // index into colorPresets
+            redColor: 6     // index into colorPresets (珊瑚)
+        };
+
+        // 初始化颜色选择面板
+        function initColorPalettes() {
+            const bluePalette = document.getElementById('blue-color-palette');
+            const redPalette = document.getElementById('red-color-palette');
+            bluePalette.innerHTML = '';
+            redPalette.innerHTML = '';
+
+            colorPresets.forEach((color, index) => {
+                // 蓝方
+                const blueEl = document.createElement('div');
+                blueEl.className = 'color-swatch' + (index === gameSettings.blueColor ? ' selected' : '');
+                blueEl.style.background = color.gradient;
+                blueEl.title = color.name;
+                blueEl.dataset.index = index;
+                blueEl.addEventListener('click', () => {
+                    bluePalette.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                    blueEl.classList.add('selected');
+                });
+                bluePalette.appendChild(blueEl);
+
+                // 红方
+                const redEl = document.createElement('div');
+                redEl.className = 'color-swatch' + (index === gameSettings.redColor ? ' selected' : '');
+                redEl.style.background = color.gradient;
+                redEl.title = color.name;
+                redEl.dataset.index = index;
+                redEl.addEventListener('click', () => {
+                    redPalette.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+                    redEl.classList.add('selected');
+                });
+                redPalette.appendChild(redEl);
+            });
+        }
+
+        // 应用玩家设置（颜色、名称等）到游戏界面
+        function applyPlayerSettings() {
+            const blueGradient = colorPresets[gameSettings.blueColor].gradient;
+            const redGradient = colorPresets[gameSettings.redColor].gradient;
+
+            // 应用CPS视觉层颜色
+            const visualBlue = document.getElementById('visual-blue');
+            const visualRed = document.getElementById('visual-red');
+            if (visualBlue) visualBlue.style.background = blueGradient;
+            if (visualRed) visualRed.style.background = redGradient;
+
+            // 应用反应/卡秒模式颜色
+            blueArea.style.background = blueGradient;
+            redArea.style.background = redGradient;
+
+            // 重新触发switchMode以刷新名称和按键
+            switchMode(gameState.mode);
+        }
+
+        // 设置面板逻辑
+        function openSettings() {
+            if (gameState.started || gameState.countingDown) return;
+
+            const overlay = document.getElementById('settings-overlay');
+            document.getElementById('setting-cps-win').value = gameSettings.cpsWinScore;
+            document.getElementById('setting-reaction-min').value = gameSettings.reactionMinWait;
+            document.getElementById('setting-reaction-max').value = gameSettings.reactionMaxWait;
+            document.getElementById('setting-timing-min').value = gameSettings.timingMinTarget;
+            document.getElementById('setting-timing-max').value = gameSettings.timingMaxTarget;
+            document.getElementById('setting-timing-precision').value = gameSettings.timingPrecision;
+            document.getElementById('setting-blue-key').value = gameSettings.blueKey.toUpperCase();
+            document.getElementById('setting-red-key').value = gameSettings.redKey.toUpperCase();
+            document.getElementById('setting-blue-name').value = gameSettings.blueName;
+            document.getElementById('setting-red-name').value = gameSettings.redName;
+
+            initColorPalettes();
+            overlay.classList.add('show');
+        }
+
+        function closeSettings() {
+            document.getElementById('settings-overlay').classList.remove('show');
+        }
+
+        function saveSettings() {
+            const cpsWinEl = document.getElementById('setting-cps-win');
+            const reactionMinEl = document.getElementById('setting-reaction-min');
+            const reactionMaxEl = document.getElementById('setting-reaction-max');
+            const timingMinEl = document.getElementById('setting-timing-min');
+            const timingMaxEl = document.getElementById('setting-timing-max');
+            const timingPrecEl = document.getElementById('setting-timing-precision');
+            const blueKeyEl = document.getElementById('setting-blue-key');
+            const redKeyEl = document.getElementById('setting-red-key');
+            const blueNameEl = document.getElementById('setting-blue-name');
+            const redNameEl = document.getElementById('setting-red-name');
+
+            const cpsWin = parseFloat(cpsWinEl.value);
+            const reactionMin = parseFloat(reactionMinEl.value);
+            const reactionMax = parseFloat(reactionMaxEl.value);
+            const timingMin = parseFloat(timingMinEl.value);
+            const timingMax = parseFloat(timingMaxEl.value);
+            const timingPrec = parseInt(timingPrecEl.value);
+            const blueKey = blueKeyEl.value.trim();
+            const redKey = redKeyEl.value.trim();
+            const blueName = blueNameEl.value.trim();
+            const redName = redNameEl.value.trim();
+
+            // 数值验证
+            const errors = [];
+            if (isNaN(cpsWin) || cpsWin <= 0) errors.push({ el: cpsWinEl, msg: '领先分数必须大于0' });
+            if (isNaN(reactionMin) || reactionMin <= 0) errors.push({ el: reactionMinEl, msg: '反应力最短等待时间必须大于0' });
+            if (isNaN(reactionMax) || reactionMax <= 0) errors.push({ el: reactionMaxEl, msg: '反应力最长等待时间必须大于0' });
+            if (isNaN(timingMin) || timingMin < 0) errors.push({ el: timingMinEl, msg: '卡秒最小目标时间不能小于0' });
+            if (isNaN(timingMax) || timingMax <= 0) errors.push({ el: timingMaxEl, msg: '卡秒最大目标时间必须大于0' });
+            if (errors.length === 0 && reactionMin >= reactionMax) errors.push({ el: reactionMaxEl, msg: '最长等待时间必须大于最短等待时间' });
+            if (errors.length === 0 && timingMin >= timingMax) errors.push({ el: timingMaxEl, msg: '最大目标时间必须大于最小目标时间' });
+
+            // 按键验证
+            if (!blueKey || blueKey.length !== 1) errors.push({ el: blueKeyEl, msg: '蓝方按键必须为单个字符' });
+            if (!redKey || redKey.length !== 1) errors.push({ el: redKeyEl, msg: '红方按键必须为单个字符' });
+            if (blueKey && redKey && blueKey.toLowerCase() === redKey.toLowerCase()) errors.push({ el: redKeyEl, msg: '两方按键不能相同' });
+
+            // 名称验证
+            if (!blueName) errors.push({ el: blueNameEl, msg: '蓝方名称不能为空' });
+            if (!redName) errors.push({ el: redNameEl, msg: '红方名称不能为空' });
+            if (blueName.length > 10) errors.push({ el: blueNameEl, msg: '蓝方名称不能超过10个字符' });
+            if (redName.length > 10) errors.push({ el: redNameEl, msg: '红方名称不能超过10个字符' });
+
+            if (errors.length > 0) {
+                alert('⚠️ ' + errors[0].msg);
+                errors[0].el.focus();
+                errors[0].el.style.borderColor = '#e74c3c';
+                setTimeout(() => { errors[0].el.style.borderColor = ''; }, 2000);
+                return;
+            }
+
+            // 保存数值设置
+            gameSettings.cpsWinScore = Math.round(cpsWin);
+            gameSettings.reactionMinWait = reactionMin;
+            gameSettings.reactionMaxWait = reactionMax;
+            gameSettings.timingMinTarget = timingMin;
+            gameSettings.timingMaxTarget = timingMax;
+            gameSettings.timingPrecision = isNaN(timingPrec) ? 1 : Math.max(0, Math.min(3, timingPrec));
+
+            // 保存按键和名称
+            gameSettings.blueKey = blueKey.toLowerCase();
+            gameSettings.redKey = redKey.toLowerCase();
+            gameSettings.blueName = blueName;
+            gameSettings.redName = redName;
+
+            // 保存颜色选择
+            const blueSelected = document.querySelector('#blue-color-palette .color-swatch.selected');
+            const redSelected = document.querySelector('#red-color-palette .color-swatch.selected');
+            if (blueSelected) gameSettings.blueColor = parseInt(blueSelected.dataset.index);
+            if (redSelected) gameSettings.redColor = parseInt(redSelected.dataset.index);
+
+            closeSettings();
+            applyPlayerSettings();
+        }
+
+        // 设置按钮事件
+        document.getElementById('settings-icon').addEventListener('click', openSettings);
+        document.getElementById('settings-save').addEventListener('click', saveSettings);
+        document.getElementById('settings-cancel').addEventListener('click', closeSettings);
+        // 点击遮罩层关闭
+        document.getElementById('settings-overlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('settings-overlay')) closeSettings();
+        });
+
         // 游戏状态
         let gameState = {
             mode: 'cps', // 'cps'、'reaction' 或 'timing'
@@ -1208,14 +1759,14 @@
 
                 // 重置CPS模式的UI - 不添加反应球
                 blueArea.innerHTML = `
-                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="key-hint" id="blue-key">${gameSettings.blueName}: <span class="key-box">${gameSettings.blueKey.toUpperCase()}</span></div>
                     <div class="mobile-stats" id="blue-mobile-stats">
                         <div class="mobile-score">0</div>
                         <div class="mobile-cps">CPS: 0.00</div>
                     </div>
                 `;
                 redArea.innerHTML = `
-                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="key-hint" id="red-key">${gameSettings.redName}: <span class="key-box">${gameSettings.redKey.toUpperCase()}</span></div>
                     <div class="mobile-stats" id="red-mobile-stats">
                         <div class="mobile-score">0</div>
                         <div class="mobile-cps">CPS: 0.00</div>
@@ -1239,11 +1790,11 @@
 
                 // 重置Reaction模式的UI
                 blueArea.innerHTML = `
-                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="key-hint" id="blue-key">${gameSettings.blueName}: <span class="key-box">${gameSettings.blueKey.toUpperCase()}</span></div>
                     <div class="reaction-ball" id="blue-ball"></div>
                 `;
                 redArea.innerHTML = `
-                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="key-hint" id="red-key">${gameSettings.redName}: <span class="key-box">${gameSettings.redKey.toUpperCase()}</span></div>
                     <div class="reaction-ball" id="red-ball"></div>
                 `;
 
@@ -1271,17 +1822,17 @@
                 cpsDisplay.style.opacity = '0';
                 gameTime.style.opacity = '1';
                 reactionTimeDisplay.style.opacity = '0';
-                targetTimeEl.style.opacity = '1';
+                targetTimeEl.style.opacity = '0';
 
                 // 为Timing模式添加秒表和玩家名称
                 blueArea.innerHTML = `
-            <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
-            <div class="player-name">蓝方</div>
+            <div class="key-hint" id="blue-key">${gameSettings.blueName}: <span class="key-box">${gameSettings.blueKey.toUpperCase()}</span></div>
+            <div class="player-name">${gameSettings.blueName}</div>
             <div class="stopwatch">0.000</div>
         `;
                 redArea.innerHTML = `
-            <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
-            <div class="player-name">红方</div>
+            <div class="key-hint" id="red-key">${gameSettings.redName}: <span class="key-box">${gameSettings.redKey.toUpperCase()}</span></div>
+            <div class="player-name">${gameSettings.redName}</div>
             <div class="stopwatch">0.000</div>
         `;
 
@@ -1414,7 +1965,7 @@
                 console.log('蓝球不存在，重新创建');
                 // 重新创建蓝球元素
                 blueArea.innerHTML = `
-                    <div class="key-hint" id="blue-key">蓝方: <span class="key-box">S</span></div>
+                    <div class="key-hint" id="blue-key">${gameSettings.blueName}: <span class="key-box">${gameSettings.blueKey.toUpperCase()}</span></div>
                     <div class="reaction-ball" id="blue-ball"></div>
                 `;
             }
@@ -1427,13 +1978,15 @@
                 console.log('红球不存在，重新创建');
                 // 重新创建红球元素
                 redArea.innerHTML = `
-                    <div class="key-hint" id="red-key">红方: <span class="key-box">L</span></div>
+                    <div class="key-hint" id="red-key">${gameSettings.redName}: <span class="key-box">${gameSettings.redKey.toUpperCase()}</span></div>
                     <div class="reaction-ball" id="red-ball"></div>
                 `;
             }
 
             // 5到12秒之间的随机等待时间
-            const waitTime = Math.random() * (9000 - 3000) + 5000;
+            const minWaitMs = gameSettings.reactionMinWait * 1000;
+            const maxWaitMs = gameSettings.reactionMaxWait * 1000;
+            const waitTime = Math.random() * (maxWaitMs - minWaitMs) + minWaitMs;
 
             // 播放开始音效
             playSound('start-sound');
@@ -1505,11 +2058,15 @@
             gameState.started = true;
             gameState.mode = 'timing';
 
-            // 生成随机目标时间（0.0-5.0秒，保留1位小数）
-            gameState.targetTime = Math.round(Math.random() * 50) / 10;
+            // 生成随机目标时间
+            const precision = gameSettings.timingPrecision;
+            const factor = Math.pow(10, precision);
+            const minT = gameSettings.timingMinTarget;
+            const maxT = gameSettings.timingMaxTarget;
+            gameState.targetTime = Math.round((Math.random() * (maxT - minT) + minT) * factor) / factor;
 
             // 显示目标时间
-            targetTimeEl.textContent = `目标时间: ${gameState.targetTime.toFixed(1)} s`;
+            targetTimeEl.textContent = `目标时间: ${gameState.targetTime.toFixed(precision)} s`;
             targetTimeEl.style.opacity = '1';
 
             counter.textContent = '按任意键开始计时...';
@@ -1568,7 +2125,7 @@
                 if (redMobileScore) redMobileScore.textContent = gameState.redScore;
 
                 const difference = gameState.blueScore - gameState.redScore;
-                const maxDifference = 30;
+                const maxDifference = gameSettings.cpsWinScore;
 
                 // 计算宽度百分比
                 let blueWidth = 50 + (difference / maxDifference) * 50;
@@ -2192,6 +2749,7 @@
 
                     // 恢复模式选择按钮
                     document.querySelector('.mode-selector').style.display = 'block';
+                    document.body.classList.remove('game-started');
 
                     // 显示最终统计
                     showFinalStats();
@@ -2367,12 +2925,10 @@
         document.addEventListener('keydown', (event) => {
             // 只有在游戏开始后且不在倒计时阶段才能操作
             if ((gameState.started || gameState.mode === 'reaction' || gameState.mode === 'timing') && !gameState.countingDown) {
-                // 蓝方按键
-                if (event.key.toLowerCase() === 's') {
+                const key = event.key.toLowerCase();
+                if (key === gameSettings.blueKey) {
                     handlePlayerAction('blue');
-                }
-                // 红方按键
-                else if (event.key.toLowerCase() === 'l') {
+                } else if (key === gameSettings.redKey) {
                     handlePlayerAction('red');
                 }
             }
@@ -2380,7 +2936,7 @@
 
         // 触摸事件监听 - 蓝方区域
         blueArea.addEventListener('touchstart', (event) => {
-            event.preventDefault(); // 防止页面滚动
+            event.preventDefault();
             handlePlayerAction('blue');
         });
 
@@ -2391,7 +2947,7 @@
 
         // 触摸事件监听 - 红方区域
         redArea.addEventListener('touchstart', (event) => {
-            event.preventDefault(); // 防止页面滚动
+            event.preventDefault();
             handlePlayerAction('red');
         });
 
@@ -2402,39 +2958,28 @@
 
         // 鼠标点击事件监听 - 蓝方区域
         blueArea.addEventListener('mousedown', (event) => {
-            // Only handle clicks when game is truly in progress
             if (!gameState.started && !gameState.countingDown) return;
             handlePlayerAction('blue');
         });
 
-        blueArea.addEventListener('mouseup', (event) => {
-            resetPlayerPressed('blue');
-        });
-
-        blueArea.addEventListener('mouseleave', (event) => {
-            resetPlayerPressed('blue');
-        });
+        blueArea.addEventListener('mouseup', () => resetPlayerPressed('blue'));
+        blueArea.addEventListener('mouseleave', () => resetPlayerPressed('blue'));
 
         // 鼠标点击事件监听 - 红方区域
         redArea.addEventListener('mousedown', (event) => {
-            // Only handle clicks when game is truly in progress
             if (!gameState.started && !gameState.countingDown) return;
             handlePlayerAction('red');
         });
 
-        redArea.addEventListener('mouseup', (event) => {
-            resetPlayerPressed('red');
-        });
-
-        redArea.addEventListener('mouseleave', (event) => {
-            resetPlayerPressed('red');
-        });
+        redArea.addEventListener('mouseup', () => resetPlayerPressed('red'));
+        redArea.addEventListener('mouseleave', () => resetPlayerPressed('red'));
 
         // 键盘抬起事件监听
         document.addEventListener('keyup', (event) => {
-            if (event.key.toLowerCase() === 's') {
+            const key = event.key.toLowerCase();
+            if (key === gameSettings.blueKey) {
                 resetPlayerPressed('blue');
-            } else if (event.key.toLowerCase() === 'l') {
+            } else if (key === gameSettings.redKey) {
                 resetPlayerPressed('red');
             }
         });
